@@ -10,11 +10,12 @@ public class Player {
     private String email;
     private int phoneNumber;
     private String state;
+    private String city;
 
     public Player() {
     }
 
-    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, int phoneNumber, String state) {
+    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, int phoneNumber, String state, String city) {
         this.playerId = playerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -96,6 +97,14 @@ public class Player {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override
