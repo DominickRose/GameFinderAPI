@@ -9,12 +9,12 @@ public class Player {
     private boolean visible;
     private String email;
     private int phoneNumber;
-    private int zipCode;
+    private String state;
 
     public Player() {
     }
 
-    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, int phoneNumber, int zipCode) {
+    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, int phoneNumber, String state) {
         this.playerId = playerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,7 +23,7 @@ public class Player {
         this.visible = visible;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.zipCode = zipCode;
+        this.state = state;
     }
 
     public int getPlayerId() {
@@ -90,12 +90,12 @@ public class Player {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getZipCode() {
-        return zipCode;
+    public String getState() {
+        return state;
     }
 
-    public void setZipCode(int zipCode) {
-        this.zipCode = zipCode;
+    public void setState(String state) {
+        this.state = state;
     }
 
     @Override
