@@ -79,23 +79,29 @@ public class PlayerController {
 
     public Handler login = ctx -> {
         JsonElement jelement = JsonParser.parseString(ctx.body());
-        JsonObject jsonObject = jelement.getAsJsonObject();
-        JsonElement username = jsonObject.get("username");
-        JsonElement password = jsonObject.get("password");
-        if (username == null || password == null) {
-            ctx.result("Invalid JSON body.  Must contain username and password");
-            ctx.status(400);
-        } else {
-            Player player = playerService.validateLogin(username.getAsString(), password.getAsString());
-            if (player == null) {
-                ctx.result("No user matches those login credentials");
-                ctx.status(422);
+        if (!jelement.isJsonNull()) {
+            JsonObject jsonObject = jelement.getAsJsonObject();
+            JsonElement username = jsonObject.get("username");
+            JsonElement password = jsonObject.get("password");
+            if (username == null || password == null) {
+                ctx.result("Invalid JSON body.  Must contain username and password");
+                ctx.status(400);
             } else {
-                Gson gson = new Gson();
-                String playerJson = gson.toJson(player);
-                ctx.result(playerJson);
-                ctx.status(200);
+                Player player = playerService.validateLogin(username.getAsString(), password.getAsString());
+                if (player == null) {
+                    ctx.result("No user matches those login credentials");
+                    ctx.status(422);
+                } else {
+                    Gson gson = new Gson();
+                    String playerJson = gson.toJson(player);
+                    ctx.result(playerJson);
+                    ctx.status(200);
+                }
             }
+        }
+        else {
+            ctx.result("Invalid JSON body");
+            ctx.status(400);
         }
     };
 }
