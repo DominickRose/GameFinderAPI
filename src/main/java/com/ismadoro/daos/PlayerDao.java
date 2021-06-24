@@ -17,5 +17,5 @@ public interface PlayerDao {
     Player updatePlayer(Player player);
 
     //Delete
-    boolean deletePlayer(int id) throws ResourceNotFound;
+    boolean deletePlayer(int playerId) throws ResourceNotFound;
 }

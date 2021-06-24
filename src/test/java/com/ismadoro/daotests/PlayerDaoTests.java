@@ -1,6 +1,7 @@
 package com.ismadoro.daotests;
 
 import com.ismadoro.daos.PlayerDao;
+import com.ismadoro.daos.PlayerDaoLocal;
 import com.ismadoro.entities.Player;
 import com.ismadoro.exceptions.ResourceNotFound;
 import org.testng.Assert;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class PlayerDaoTests {
 
-    private static final PlayerDao playerDao = null;
+    private static final PlayerDao playerDao = new PlayerDaoLocal();
     private static final Player testPlayer = new Player(0, "Test", "Player", "testPlayer", "test", true, "a@email.com");
     private static final Player testPlayer2 = new Player(0, "Test2", "Player", "testPlayer2", "test", false, "b@email.com");
 
