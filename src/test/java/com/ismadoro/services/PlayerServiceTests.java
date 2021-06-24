@@ -14,8 +14,8 @@ import java.util.List;
 public class PlayerServiceTests {
 
     @Mock
-    private static PlayerDao mockPlayerDao = null;
-    private static PlayerService playerService = null;
+    final PlayerDao mockPlayerDao = Mockito.mock(PlayerDao.class);
+    PlayerService playerService = null;
 
     @BeforeMethod
     void playerDaoSetup() {
@@ -27,7 +27,7 @@ public class PlayerServiceTests {
         mockList.add(testPlayer2);
         mockList.add(testPlayer3);
         Mockito.when(mockPlayerDao.getAllPlayers()).thenReturn(mockList);
-        //playerService = new PlayerServiceImpl(mockPlayerDao);
+        playerService = new PlayerServiceImpl(mockPlayerDao);
     }
 
     @Test(priority = 1)
