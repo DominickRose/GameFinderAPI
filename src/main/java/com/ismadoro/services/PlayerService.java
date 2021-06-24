@@ -18,6 +18,7 @@ public interface PlayerService {
     //Delete
     public boolean deletePlayer(int playerId);
 
-    //Other
+    //Takes a username and password and returns a Player object from the database who matches those credentials
+    //Returns null if no player with the given credentials exists
     public Player validateLogin(String username, String password);
 }
