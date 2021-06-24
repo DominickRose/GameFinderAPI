@@ -8,11 +8,13 @@ public class Player {
     private String password;
     private boolean visible;
     private String email;
+    private int phoneNumber;
+    private int zipCode;
 
     public Player() {
     }
 
-    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email) {
+    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, int phoneNumber, int zipCode) {
         this.playerId = playerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,6 +22,8 @@ public class Player {
         this.password = password;
         this.visible = visible;
         this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.zipCode = zipCode;
     }
 
     public int getPlayerId() {
@@ -76,6 +80,22 @@ public class Player {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
     }
 
     @Override

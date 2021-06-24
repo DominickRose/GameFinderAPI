@@ -1,4 +1,4 @@
-package com.ismadoro.daotests;
+package com.ismadoro.daos;
 
 public class RegistrationDaoTests {
 }

@@ -26,7 +26,7 @@ public class PlayerDaoLocal implements PlayerDao{
         Integer id = playerId;
         Player result = map.get(id);
         if (result == null) {
-            throw new ResourceNotFound();
+            throw new ResourceNotFound("Resource with given ID not found");
         }
         return result;
     }
@@ -44,7 +44,7 @@ public class PlayerDaoLocal implements PlayerDao{
     public Player updatePlayer(Player player) {
         Integer id = player.getPlayerId();
         if (map.get(id) == null) {
-            throw new ResourceNotFound();
+            throw new ResourceNotFound("Resource with given ID not found");
         }
         map.put(id, player);
         return player;
@@ -55,7 +55,7 @@ public class PlayerDaoLocal implements PlayerDao{
         Integer id = playerId;
         Player result = map.remove(id);
         if (result == null) {
-            throw new ResourceNotFound();
+            throw new ResourceNotFound("Resource with given ID not found");
         }
         else {
             return true;
