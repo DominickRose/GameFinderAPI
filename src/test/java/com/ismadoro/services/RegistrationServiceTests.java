@@ -25,7 +25,7 @@ public class RegistrationServiceTests {
         registrationList.add(new Registration(5, 2, 2));
 
         Mockito.when(registrationDao.getAllRegistrations()).thenReturn(registrationList);
-//        registrationService = new RegistrationServiceImpl(registrationDao)
+        registrationService = new RegistrationServiceImpl(registrationDao);
     }
 
     @Test(priority = 1)
