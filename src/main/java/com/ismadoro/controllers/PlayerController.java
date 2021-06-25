@@ -80,6 +80,9 @@ public class PlayerController {
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
+        } catch (DuplicateResourceException duplicateResourceException) {
+            ctx.result(duplicateResourceException.message);
+            ctx.status(422);
         }
     };
 

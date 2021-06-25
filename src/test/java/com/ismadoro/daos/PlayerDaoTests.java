@@ -83,6 +83,17 @@ public class PlayerDaoTests {
         }
     }
 
+    @Test(priority = 4)
+    void testUpdateToExistingUsername() {
+        testPlayer.setUsername(testPlayer2.getUsername());
+        try {
+            playerDao.updatePlayer(testPlayer);
+            Assert.fail();
+        } catch (DuplicateResourceException duplicateResourceException) {
+            //Succeed
+        }
+    }
+
     @Test(priority = 5)
     void testDeletePlayer() {
         boolean deleted = playerDao.deletePlayer(testPlayer.getPlayerId());

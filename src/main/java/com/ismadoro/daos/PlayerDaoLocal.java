@@ -22,7 +22,7 @@ public class PlayerDaoLocal implements PlayerDao{
         if (usernameOwnedBy != null) {
             throw new DuplicateResourceException("A player with that username already exists");
         } else {
-            usedUsernames.put(player.getUsername(), player.getPlayerId());
+            usedUsernames.put(player.getUsername(), idCounter);
         }
 
         Integer id = idCounter++;
@@ -56,8 +56,16 @@ public class PlayerDaoLocal implements PlayerDao{
         if (map.get(id) == null) {
             throw new ResourceNotFound("Resource with given ID not found");
         }
-        map.put(id, player);
-        return player;
+
+        String username = player.getUsername();
+        //Check that if the username has been changed it's not already taken
+        if (usedUsernames.get(username) == null || usedUsernames.get(username) == player.getPlayerId()) {
+            usedUsernames.put(username, player.getPlayerId());
+            map.put(id, player);
+            return player;
+        } else {
+            throw new DuplicateResourceException("That username is already taken");
+        }
     }
 
     @Override
