@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface RegistrationDao {
     //Create
-    Registration addPlayer(Registration player);
+    Registration addRegistration(Registration registration);
 
     //Read
-    Registration getSinglePlayer(int playerId);
-    List<Registration> getAllPlayers();
+    Registration getSingleRegistation(int registrationId);
+    List<Registration> getAllRegistrations();
 
     //Update
-    Registration updatePlayer(Registration player);
+    Registration updateRegistration(Registration registration);
 
     //Delete
-    boolean deletePlayer(int id);
+    boolean deleteRegistration(int registrationId);
 }

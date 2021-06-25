@@ -9,33 +9,33 @@ import java.util.UUID;
 
 public class RegistrationDaoTests {
     private static RegistrationDao registrationDao = null;
-    private static PlayerDao playerDao = null;
-    private static EventDao eventDao = null;
+    private static PlayerDao playerDao = new PlayerDaoLocal();
+    private static EventDao eventDao = null; //Initialize once finished
 
-    private Player testPlayer1;
-    private Player testPlayer2;
-    
-    private Event testEvent1;
-    private Event testEvent2;
+    private static final Player testPlayer1 = new Player(0, "Player", "One", UUID.randomUUID().toString(), "test", true, "a@email.com", 1234567890, "WA", "Spokane");;
+    private static final Player testPlayer2 = new Player(0, "Player", "Two", UUID.randomUUID().toString(), "test", true, "a@email.com", 1234567890, "WA", "Spokane");;
+
+    //Once Events are finished, initialize these
+    private static final Event testEvent1 = null;
+    private static final Event testEvent2 = null;
 
     @BeforeClass
     void setup() {
-        //Assign values for daos
-
-        playerDao = new PlayerDaoLocal();
-
-        testPlayer1 = new Player(0, "Player", "One", UUID.randomUUID().toString(), "test", true, "a@email.com", 1234567890, "WA", "Spokane");
-        testPlayer2 = new Player(0, "Player", "Two", UUID.randomUUID().toString(), "test", true, "a@email.com", 1234567890, "WA", "Spokane");
-
         playerDao.addPlayer(testPlayer1);
         playerDao.addPlayer(testPlayer2);
 
-        //Need working Event information before I can do this
+        eventDao.addPlayer(testEvent1); //Refactor these once complete
+        eventDao.addPlayer(testEvent2);
     }
 
     @AfterClass
     void cleanup() {
         playerDao.deletePlayer(testPlayer1.getPlayerId());
         playerDao.deletePlayer(testPlayer2.getPlayerId());
+
+//        eventDao.deletePlayer(testEvent1.getEventId());
+//        eventDao.deletePlayer(testEvent2.getEventId());
     }
+
+    
 }
