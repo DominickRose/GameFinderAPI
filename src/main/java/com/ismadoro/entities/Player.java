@@ -25,6 +25,7 @@ public class Player {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.state = state;
+        this.city = city;
     }
 
     public int getPlayerId() {
