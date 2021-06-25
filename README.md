@@ -8,6 +8,7 @@ RESTful API for creating and accessing information on volleyball events
 **GET** /players
 + Returns an array with JSON objects representing all players 
   - Status Code 200: Successful retrieval of all players
+  - Status Code 422: Failed to add player because username was a duplicate
     
 **GET** /players/id
 + Returns the Player object with the given id

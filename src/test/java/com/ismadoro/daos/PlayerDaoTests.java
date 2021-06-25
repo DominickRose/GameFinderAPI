@@ -1,6 +1,7 @@
 package com.ismadoro.daos;
 
 import com.ismadoro.entities.Player;
+import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.ResourceNotFound;
 import org.testng.Assert;
 
@@ -26,6 +27,16 @@ public class PlayerDaoTests {
         playerDao.addPlayer(testPlayer2);
         Assert.assertNotEquals(testPlayer2.getPlayerId(), 0);
         Assert.assertNotEquals(testPlayer.getPlayerId(), testPlayer2.getPlayerId());
+    }
+
+    @Test(priority = 2)
+    void testAddDuplicatePlayer() {
+        try {
+            playerDao.addPlayer(testPlayer2);
+            Assert.fail();
+        } catch (DuplicateResourceException duplicateResourceException) {
+            //Succeed
+        }
     }
 
     @Test(priority = 2)

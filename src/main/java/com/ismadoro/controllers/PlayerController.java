@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ismadoro.entities.Player;
+import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.ResourceNotFound;
 import com.ismadoro.services.PlayerService;
 import io.javalin.http.Handler;
@@ -19,12 +20,17 @@ public class PlayerController {
     }
 
     public Handler addNewPlayer = ctx -> {
-        Gson gson = new Gson();
-        Player player = gson.fromJson(ctx.body(), Player.class);
-        player = this.playerService.addPlayer(player);
-        String playerJson = gson.toJson(player);
-        ctx.result(playerJson);
-        ctx.status(201);
+        try {
+            Gson gson = new Gson();
+            Player player = gson.fromJson(ctx.body(), Player.class);
+            player = this.playerService.addPlayer(player);
+            String playerJson = gson.toJson(player);
+            ctx.result(playerJson);
+            ctx.status(201);
+        } catch (DuplicateResourceException duplicateResourceException) {
+            ctx.result(duplicateResourceException.message);
+            ctx.status(422);
+        }
     };
 
     public Handler getAllPlayers = ctx -> {

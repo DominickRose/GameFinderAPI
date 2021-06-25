@@ -1,6 +1,7 @@
 package com.ismadoro.daos;
 
 import com.ismadoro.entities.Player;
+import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.ResourceNotFound;
 
 import java.util.ArrayList;
@@ -11,10 +12,19 @@ import java.util.Map;
 public class PlayerDaoLocal implements PlayerDao{
 
     private static final Map<Integer, Player> map = new HashMap<>();
+    private static final Map<String, Integer> usedUsernames = new HashMap<>();
     private static int idCounter = 1;
 
     @Override
     public Player addPlayer(Player player) {
+        //Check that no duplicate usernames have been added
+        Integer usernameOwnedBy = usedUsernames.get(player.getUsername());
+        if (usernameOwnedBy != null) {
+            throw new DuplicateResourceException("A player with that username already exists");
+        } else {
+            usedUsernames.put(player.getUsername(), player.getPlayerId());
+        }
+
         Integer id = idCounter++;
         player.setPlayerId(id);
         map.put(id, player);
