@@ -82,7 +82,7 @@ public class App {
         //Return 404 if the ID is invalid
         app.delete("/registration/:id", registrationController.deleteRegistration);
 
-        
+
         app.start();
     }
 }
