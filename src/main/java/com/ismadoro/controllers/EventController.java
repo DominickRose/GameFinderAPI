@@ -27,7 +27,7 @@ public class EventController {
         ctx.status(200);
     };
 
-    public Handler createBook = ctx -> {
+    public Handler createEvent = ctx -> {
         Gson gson = new Gson();
         Event event = gson.fromJson(ctx.body(), Event.class);
         this.eventServices.createEvent(event);
@@ -36,13 +36,32 @@ public class EventController {
         ctx.status(201);
     };
 
-    public Handler getBookById = ctx -> {
+    public Handler getEventById = ctx -> {
         int id = Integer.parseInt(ctx.pathParam("id"));
         Event event = this.eventServices.getEventById(id);
         Gson gson = new Gson();
         String eventJSON = gson.toJson(event);
         ctx.result(eventJSON);
         ctx.status(200);
+    };
+
+    public Handler deleteEvent = ctx -> {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        boolean result = this.eventServices.deleteEvent(id);
+        ctx.result("Successfully deleted resource");
+        ctx.status(205);
+    };
+
+    public Handler updateEvent = ctx -> {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        Gson gson = new Gson();
+        Event event = gson.fromJson(ctx.body(), Event.class);
+        event.setEventId(id);
+        event = eventServices.updateEvent(event);
+        String eventJson = gson.toJson(event);
+        ctx.result(eventJson);
+        ctx.status(200);
+
     };
 
 }

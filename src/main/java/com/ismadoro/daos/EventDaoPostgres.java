@@ -11,15 +11,17 @@ public class EventDaoPostgres implements EventDao {
     @Override
     public Event addEvent(Event event) {
         try (Connection connection = ConnectionUtil.createConnection()) {
-            String sql = "insert into event (ownerId, date, location, description, skillLevel, eventTitle, type) values (?,?,?,?,?,?,?)";
+            String sql = "insert into event (ownerId, date, city, state, description, skillLevel, eventTitle, type, maxPlayers) values (?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, event.getOwnerId());
             ps.setString(2, event.getDate());
-            ps.setInt(3, event.getLocation());
-            ps.setString(4, event.getDescription());
-            ps.setString(5, event.getSkillLevel());
-            ps.setString(6, event.getEventTitle());
-            ps.setString(7, event.getType());
+            ps.setString(3, event.getCity());
+            ps.setString(4, event.getState());
+            ps.setString(5, event.getDescription());
+            ps.setString(6, event.getSkillLevel());
+            ps.setString(7, event.getEventTitle());
+            ps.setString(8, event.getType());
+            ps.setInt(9, event.getMaxPlayers());
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -47,11 +49,13 @@ public class EventDaoPostgres implements EventDao {
             event.setOwnerId(rs.getInt("ownerId"));
             event.setEventId(rs.getInt("eventId"));
             event.setDate(rs.getString("date"));
-            event.setLocation(rs.getInt("location"));
+            event.setCity(rs.getString("city"));
+            event.setState(rs.getString("state"));
             event.setDescription(rs.getString("description"));
             event.setSkillLevel(rs.getString("skillLevel"));
             event.setEventTitle(rs.getString("eventTitle"));
             event.setType(rs.getString("type"));
+            event.setMaxPlayers(rs.getInt("maxPlayers"));
 
             return event;
 
@@ -74,11 +78,13 @@ public class EventDaoPostgres implements EventDao {
                 event.setOwnerId(rs.getInt("ownerId"));
                 event.setEventId(rs.getInt("eventId"));
                 event.setDate(rs.getString("date"));
-                event.setLocation(rs.getInt("location"));
+                event.setCity(rs.getString("city"));
+                event.setState(rs.getString("state"));
                 event.setDescription(rs.getString("description"));
                 event.setSkillLevel(rs.getString("skillLevel"));
                 event.setEventTitle(rs.getString("eventTitle"));
                 event.setType(rs.getString("type"));
+                event.setMaxPlayers(rs.getInt("maxPlayers"));
                 events.add(event);
             }
             return events;
@@ -92,16 +98,19 @@ public class EventDaoPostgres implements EventDao {
     @Override
     public Event updateEvent(Event event) {
         try (Connection connection = ConnectionUtil.createConnection()) {
-            String sql = "update event set ownerId=?, date=?, location=?, description=?, skillLevel=?, eventTitle=?, type=? where eventId=?";
+            String sql = "update event set ownerId=?, date=?, city=?, state=?, description=?, skillLevel=?, eventTitle=?, type=?, maxPlayers=? where eventId=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, event.getOwnerId());
             ps.setString(2, event.getDate());
-            ps.setInt(3, event.getLocation());
-            ps.setString(4, event.getDescription());
-            ps.setString(5, event.getSkillLevel());
-            ps.setString(6, event.getEventTitle());
-            ps.setString(7, event.getType());
-            ps.setInt(8, event.getEventId());
+            ps.setString(3, event.getCity());
+            ps.setString(4, event.getState());
+            ps.setString(5, event.getDescription());
+            ps.setString(6, event.getSkillLevel());
+            ps.setString(7, event.getEventTitle());
+            ps.setString(8, event.getType());
+            ps.setInt(9, event.getMaxPlayers());
+            ps.setInt(10, event.getEventId());
+
             ps.executeUpdate();
 
             return event;
