@@ -1,9 +1,6 @@
 package com.ismadoro.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.ismadoro.entities.Player;
 import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.ResourceNotFound;
@@ -30,6 +27,9 @@ public class PlayerController {
         } catch (DuplicateResourceException duplicateResourceException) {
             ctx.result(duplicateResourceException.message);
             ctx.status(422);
+        } catch (JsonSyntaxException | NullPointerException e) {
+            ctx.result("Invalid JSON Body");
+            ctx.status(400);
         }
     };
 
@@ -68,11 +68,11 @@ public class PlayerController {
     };
 
     public Handler updatePlayer = ctx -> {
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        Gson gson = new Gson();
-        Player player = gson.fromJson(ctx.body(), Player.class);
-        player.setPlayerId(id);
         try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            Gson gson = new Gson();
+            Player player = gson.fromJson(ctx.body(), Player.class);
+            player.setPlayerId(id);
             player = playerService.updatePlayer(player);
             String playerJson = gson.toJson(player);
             ctx.result(playerJson);
@@ -83,6 +83,9 @@ public class PlayerController {
         } catch (DuplicateResourceException duplicateResourceException) {
             ctx.result(duplicateResourceException.message);
             ctx.status(422);
+        } catch (JsonSyntaxException | NullPointerException | NumberFormatException e) {
+            ctx.result("Invalid request");
+            ctx.status(400);
         }
     };
 
