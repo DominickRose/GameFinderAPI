@@ -42,8 +42,8 @@ public class PlayerController {
     };
 
     public Handler getSinglePlayer = ctx -> {
-        int id = Integer.parseInt(ctx.pathParam("id"));
         try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
             Player player = playerService.getSinglePlayer(id);
             Gson gson = new Gson();
             String playerJson = gson.toJson(player);
@@ -52,18 +52,25 @@ public class PlayerController {
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
+        } catch (NumberFormatException e) {
+            ctx.result("Invalid ID in path param");
+            ctx.status(400);
         }
     };
 
     public Handler deleteSinglePlayer = ctx -> {
-        int id = Integer.parseInt(ctx.pathParam("id"));
         try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+
             boolean result = playerService.deletePlayer(id);
             ctx.result("Successfully deleted resource");
             ctx.status(205);
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
+        } catch (NumberFormatException e) {
+            ctx.result("Invalid ID in path param");
+            ctx.status(400);
         }
     };
 
