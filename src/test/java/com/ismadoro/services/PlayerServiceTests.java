@@ -19,9 +19,9 @@ public class PlayerServiceTests {
 
     @BeforeMethod
     void playerDaoSetup() {
-        Player testPlayer1 = new Player(1, "Test", "Player", "test1", "test", true, "a@email.com", 1234567890, "WA", "");
-        Player testPlayer2 = new Player(2, "Test", "Player", "test2", "test2", true, "a@email.com", 1234567890, "UT", "");
-        Player testPlayer3 = new Player(3, "Test", "Player", "test3", "test3", true, "a@email.com", 1234567890, "WA", "");
+        Player testPlayer1 = new Player(1, "Test", "Player", "test1", "test", true, "a@email.com", "1234567890", "WA", "");
+        Player testPlayer2 = new Player(2, "Test", "Player", "test2", "test2", true, "a@email.com", "1234567890", "UT", "");
+        Player testPlayer3 = new Player(3, "Test", "Player", "test3", "test3", true, "a@email.com", "1234567890", "WA", "");
         List<Player> mockList = new ArrayList<>();
         mockList.add(testPlayer1);
         mockList.add(testPlayer2);
