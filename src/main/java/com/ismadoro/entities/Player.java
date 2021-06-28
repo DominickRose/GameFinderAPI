@@ -8,14 +8,14 @@ public class Player {
     private String password;
     private boolean visible;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private String state;
     private String city;
 
     public Player() {
     }
 
-    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, int phoneNumber, String state, String city) {
+    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, String phoneNumber, String state, String city) {
         this.playerId = playerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -83,11 +83,11 @@ public class Player {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
