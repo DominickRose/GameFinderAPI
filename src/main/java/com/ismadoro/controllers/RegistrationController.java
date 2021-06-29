@@ -1,23 +1,29 @@
 package com.ismadoro.controllers;
 
 import com.google.gson.Gson;
+import com.ismadoro.entities.Player;
 import com.ismadoro.entities.Registration;
 import com.ismadoro.exceptions.ResourceNotFound;
+import com.ismadoro.services.EventServices;
 import com.ismadoro.services.PlayerService;
 import com.ismadoro.services.RegistrationService;
 
 import io.javalin.http.Handler;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrationController {
 
     private PlayerService playerService;
+    private EventServices eventServices;
     private RegistrationService registrationService;
 
     //Once event services have been added we can add those to the constructor on this
-    public RegistrationController(RegistrationService registrationService, PlayerService playerService) {
+    public RegistrationController(RegistrationService registrationService, PlayerService playerService, EventServices eventService) {
         this.playerService = playerService;
         this.registrationService = registrationService;
+        this.eventServices = eventService;
     }
 
     public Handler addRegistration = ctx -> {
@@ -78,7 +84,33 @@ public class RegistrationController {
 
 
     public Handler getAllPlayersWithConditions = ctx -> {
-        //Intentionally left blank for right now.  Once Events are ready, I'll add a find by event feature using a query parameter
+        try {
+            String event = ctx.queryParam("eventId");
+
+            if (event != null) {
+                System.out.println(event);
+                List<Player> allPlayers = new ArrayList<>();
+                List<Integer> allPlayerIds = registrationService.getAllPlayersForEvent(Integer.parseInt(event));
+                for (Integer playerId : allPlayerIds) {
+                    System.out.println(playerId);
+                    allPlayers.add(playerService.getSinglePlayer(playerId));
+                }
+                Gson gson = new Gson();
+                String allPlayersJson = gson.toJson(allPlayers);
+
+                ctx.result(allPlayersJson);
+                ctx.status(200);
+            } else {
+                List<Player> allPlayers = playerService.getAllPlayers();
+                Gson gson = new Gson();
+                String allPlayersJson = gson.toJson(allPlayers);
+                ctx.result(allPlayersJson);
+                ctx.status(200);
+            }
+        } catch (NumberFormatException e) {
+            ctx.result("Invalid search parameter, must be integer");
+            ctx.status(400);
+        }
     };
 
     public Handler getAllEventsWithConditions = ctx -> {

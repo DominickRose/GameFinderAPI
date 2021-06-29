@@ -41,7 +41,7 @@ public class App {
 
         RegistrationDao registrationDao = new RegistrationDaoLocal();
         RegistrationService registrationService = new RegistrationServiceImpl(registrationDao);
-        RegistrationController registrationController = new RegistrationController(registrationService, playerService);
+        RegistrationController registrationController = new RegistrationController(registrationService, playerService, eventServices);
 
         //get /events
         app.get("/events", eventController.getAllEvents);
@@ -65,7 +65,7 @@ public class App {
 
         //Get all players
         //Return 200 and JSON array of objects on success
-        app.get("/players", playerController.getAllPlayers);
+        app.get("/players", registrationController.getAllPlayersWithConditions);
 
         //Get single player
         //Return 200 and JSON representation of object on success
