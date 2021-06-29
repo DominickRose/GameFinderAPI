@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface EventDao {
     //Create
-    Event addPlayer(Event player);
+    Event addEvent(Event event);
 
     //Read
-    Event getSinglePlayer(int playerId);
-    List<Event> getAllPlayers();
+    Event getSingleEvent(int eventId);
+    List<Event> getAllEvents();
 
     //Update
-    Event updatePlayer(Event player);
+    Event updateEvent(Event event);
 
     //Delete
-    boolean deletePlayer(int id);
+    boolean deleteEvent(int eventId);
 }
