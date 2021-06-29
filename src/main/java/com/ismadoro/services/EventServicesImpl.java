@@ -3,6 +3,7 @@ package com.ismadoro.services;
 import com.ismadoro.daos.EventDao;
 import com.ismadoro.entities.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventServicesImpl implements EventServices {
@@ -25,6 +26,19 @@ public class EventServicesImpl implements EventServices {
     @Override
     public List<Event> getSeveralEvents() {
         return eventDao.getAllEvents();
+    }
+
+    @Override
+    public List<Event> getEventsByTitle(String title) {
+        List<Event> events = this.eventDao.getAllEvents();
+        List<Event> filteredEvents = new ArrayList<>();
+
+        for (Event e : events) {
+            if (e.getEventTitle().contains(title)) {
+                filteredEvents.add(e);
+            }
+        }
+        return filteredEvents;
     }
 
     @Override
