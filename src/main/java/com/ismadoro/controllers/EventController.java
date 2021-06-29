@@ -37,11 +37,18 @@ public class EventController {
 
 //    public Handler getAllEvents = ctx -> {
 //        try {
+//            String title = ctx.queryParam("titlecontains");
 //            List<Event> events = this.eventServices.getSeveralEvents();
+//            if(title != null){
+//                events = this.eventServices.getSeveralEvents();
+//            }else{
+//                events = this.eventServices.getEventsByTitle(title);
+//            }
 //            Gson gson = new Gson();
 //            String eventJSON = gson.toJson(events);
 //            ctx.result(eventJSON);
 //            ctx.status(200);
+//            ctx.contentType("application/json");
 //        } catch (JsonSyntaxException jsonSyntaxException) {
 //            ctx.result(jsonSyntaxException.getMessage());
 //            ctx.status(400);

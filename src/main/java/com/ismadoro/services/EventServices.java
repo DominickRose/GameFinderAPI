@@ -12,6 +12,8 @@ public interface EventServices {
 
     List<Event> getSeveralEvents();
 
+    List<Event> getEventsByTitle(String title);
+
     Event updateEvent(Event event);
 
     Boolean deleteEvent(int eventId);

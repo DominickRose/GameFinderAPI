@@ -45,6 +45,7 @@ public class App {
 
         //get /events
         //Use the query parameter playerId= to search for all events a single player is registered for
+        //Use the query parameter titlecontains= to filter for events by title
         app.get("/events", registrationController.getAllEventsWithConditions);
 
         //get /events/5

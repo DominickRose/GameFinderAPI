@@ -127,8 +127,16 @@ public class RegistrationController {
     public Handler getAllEventsWithConditions = ctx -> {
         try {
             String player = ctx.queryParam("playerId");
+            String title = ctx.queryParam("titlecontains");
 
-            if (player != null) {
+            if (title != null) { //If the user passes in the titlename query parameter
+                List<Event> events = this.eventServices.getEventsByTitle(title);
+                Gson gson = new Gson();
+                String eventJSON = gson.toJson(events);
+                ctx.result(eventJSON);
+                ctx.status(200);
+                ctx.contentType("application/json");
+            } else if (player != null) { //If the user passes in the playerId query parameter
                 List<Event> allEvents = new ArrayList<>();
                 List<Integer> allEventIds = registrationService.getAllEventsForPlayer(Integer.parseInt(player));
                 for (Integer eventId : allEventIds) {
