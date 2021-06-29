@@ -103,17 +103,17 @@ public class App {
         //Get a single registration
         //Return 200 and JSON representation of the retrieved object
         //Return 404 for invalid ID
-        app.get("/registration/:id", registrationController.getSingleRegistration);
+        app.get("/registrations/:id", registrationController.getSingleRegistration);
 
         //Update the registration with the given ID
         //Return 200 and JSON for updated object on successful update
         //Return 404 if the specified object does not exist
-        app.put("/registration/:id", registrationController.updateRegistration);
+        app.put("/registrations/:id", registrationController.updateRegistration);
 
         //Delete the registration with the given ID
         //Return 205 on successful delete
         //Return 404 if the ID is invalid
-        app.delete("/registration/:id", registrationController.deleteRegistration);
+        app.delete("/registrations/:id", registrationController.deleteRegistration);
 
 
         app.start();

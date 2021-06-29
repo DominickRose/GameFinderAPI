@@ -1,6 +1,7 @@
 package com.ismadoro.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.ismadoro.entities.Event;
 import com.ismadoro.entities.Player;
 import com.ismadoro.entities.Registration;
@@ -28,12 +29,17 @@ public class RegistrationController {
     }
 
     public Handler addRegistration = ctx -> {
-        Gson gson = new Gson();
-        Registration newRegistration = gson.fromJson(ctx.body(), Registration.class);
-        Registration addedRegistration = this.registrationService.addRegistration(newRegistration);
-        String registrationJson = gson.toJson(addedRegistration);
-        ctx.result(registrationJson);
-        ctx.status(201);
+        try {
+            Gson gson = new Gson();
+            Registration newRegistration = gson.fromJson(ctx.body(), Registration.class);
+            Registration addedRegistration = this.registrationService.addRegistration(newRegistration);
+            String registrationJson = gson.toJson(addedRegistration);
+            ctx.result(registrationJson);
+            ctx.status(201);
+        } catch (JsonSyntaxException | NullPointerException e) {
+            ctx.result("Invalid JSON Body");
+            ctx.status(400);
+        }
     };
 
     public Handler getAllRegistrations = ctx -> {
@@ -69,6 +75,9 @@ public class RegistrationController {
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
+        } catch (JsonSyntaxException | NullPointerException | NumberFormatException e) {
+            ctx.result("Invalid request");
+            ctx.status(400);
         }
     };
 
@@ -80,6 +89,9 @@ public class RegistrationController {
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
+        } catch (NumberFormatException e) {
+            ctx.result("Invalid ID in path param");
+            ctx.status(400);
         }
     };
 

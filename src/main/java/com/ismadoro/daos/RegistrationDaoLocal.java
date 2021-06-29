@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class RegistrationDaoLocal implements RegistrationDao{
     private final Map<Integer, Registration> registrationMap = new HashMap<>();
-    private int idGenerator = 1;
+    private static int idGenerator = 1;
 
     @Override
     public Registration addRegistration(Registration registration) {
         Integer id = idGenerator++;
         registration.setRegistrationId(id);
-        registrationMap.put(id, registration);
+        registrationMap.put(registration.getRegistrationId(), registration);
         return registrationMap.get(id);
     }
 
@@ -40,7 +40,7 @@ public class RegistrationDaoLocal implements RegistrationDao{
 
     @Override
     public Registration updateRegistration(Registration registration) {
-        Integer id = registration.getPlayerId();
+        Integer id = registration.getRegistrationId();
         if (registrationMap.get(id) == null) {
             throw new ResourceNotFound("The Registration with the given ID could not be found");
         }
