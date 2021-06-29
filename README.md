@@ -1,9 +1,9 @@
 # GameFinderAPI
 RESTful API for creating and accessing information on volleyball events
 
-#Endpoints
+# Endpoints
 
-###Players
+### Players
 
 **GET** /players
 + Returns an array with JSON objects representing all players 
@@ -35,7 +35,7 @@ RESTful API for creating and accessing information on volleyball events
   - Status Code 205: Succesfully deleted the object
   - Status Code 404: Object with the given ID could not be found   
 
-###Events
+### Events
 
 **GET** /events
 + Returns an array with JSON objects representing all events 
