@@ -1,4 +1,4 @@
-package com.ismadoro.daotests;
+package com.ismadoro.daos;
 
 import com.ismadoro.daos.EventDao;
 import com.ismadoro.daos.EventDaoLocal;
