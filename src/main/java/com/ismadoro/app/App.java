@@ -3,6 +3,7 @@ package com.ismadoro.app;
 import com.ismadoro.controllers.EventController;
 import com.ismadoro.daos.EventDao;
 import com.ismadoro.daos.EventDaoLocal;
+import com.ismadoro.daos.EventDaoPostgres;
 import com.ismadoro.services.EventServices;
 import com.ismadoro.services.EventServicesImpl;
 import io.javalin.Javalin;
@@ -11,7 +12,7 @@ public class App {
 
     public static void main(String[] args) {
         Javalin app = Javalin.create();
-        EventDao eventDao = new EventDaoLocal();
+        EventDao eventDao = new EventDaoPostgres();
         EventServices eventServices = new EventServicesImpl(eventDao);
         EventController eventController = new EventController(eventServices);
 

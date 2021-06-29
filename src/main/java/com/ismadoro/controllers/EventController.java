@@ -1,7 +1,10 @@
 package com.ismadoro.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.ismadoro.entities.Event;
+import com.ismadoro.exceptions.InvalidJson;
+import com.ismadoro.exceptions.ResourceNotFound;
 import com.ismadoro.services.EventServices;
 import io.javalin.http.Handler;
 
@@ -16,52 +19,111 @@ public class EventController {
         this.eventServices = eventServices;
     }
 
-    public Handler getAllEvents = ctx -> {
-        String title = ctx.queryParam("titlecontains");
-        List<Event> events;
-        events = this.eventServices.getSeveralEvents();
-
-        Gson gson = new Gson();
-        String eventJSON = gson.toJson(events);
-        ctx.result(eventJSON);
-        ctx.status(200);
-    };
 
     public Handler createEvent = ctx -> {
-        Gson gson = new Gson();
-        Event event = gson.fromJson(ctx.body(), Event.class);
-        this.eventServices.createEvent(event);
-        String eventJSON = gson.toJson(event);
-        ctx.result(eventJSON);
-        ctx.status(201);
+        try {
+            Gson gson = new Gson();
+            Event event = gson.fromJson(ctx.body(), Event.class);
+            this.eventServices.createEvent(event);
+            String eventJSON = gson.toJson(event);
+            ctx.result(eventJSON);
+            ctx.status(201);
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        }
+    };
+
+    public Handler getAllEvents = ctx -> {
+        try {
+            List<Event> events = this.eventServices.getSeveralEvents();
+            Gson gson = new Gson();
+            String eventJSON = gson.toJson(events);
+            ctx.result(eventJSON);
+            ctx.status(200);
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        }
     };
 
     public Handler getEventById = ctx -> {
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        Event event = this.eventServices.getEventById(id);
-        Gson gson = new Gson();
-        String eventJSON = gson.toJson(event);
-        ctx.result(eventJSON);
-        ctx.status(200);
+        try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+
+            Event event = this.eventServices.getEventById(id);
+            if (event == null) {
+                ctx.status(404);
+                throw new ResourceNotFound("Event could not be found");
+            } else {
+                Gson gson = new Gson();
+                String eventJSON = gson.toJson(event);
+                ctx.result(eventJSON);
+                ctx.status(200);
+            }
+        } catch (NumberFormatException numberFormatException) {
+            ctx.result(numberFormatException.getMessage());
+            ctx.status(400);
+            throw new NumberFormatException("Failed to convert a String into an int");
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        } catch (ResourceNotFound resourceNotFound) {
+            ctx.result(resourceNotFound.message);
+            ctx.status(404);
+            throw new ResourceNotFound("Did not receive a valid input");
+        }
     };
 
     public Handler deleteEvent = ctx -> {
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        boolean result = this.eventServices.deleteEvent(id);
-        ctx.result("Successfully deleted resource");
-        ctx.status(205);
+        try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            boolean result = this.eventServices.deleteEvent(id);
+            if (result) {
+                ctx.result("Successfully deleted event");
+                ctx.status(205);
+            } else {
+                ctx.status(404);
+                throw new ResourceNotFound("Event could not be found");
+            }
+
+        } catch (NumberFormatException numberFormatException) {
+            ctx.result(numberFormatException.getMessage());
+            ctx.status(400);
+            throw new NumberFormatException("Failed to convert a String into an int");
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        }
     };
 
     public Handler updateEvent = ctx -> {
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        Gson gson = new Gson();
-        Event event = gson.fromJson(ctx.body(), Event.class);
-        event.setEventId(id);
-        event = eventServices.updateEvent(event);
-        String eventJson = gson.toJson(event);
-        ctx.result(eventJson);
-        ctx.status(200);
-
+        try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            Gson gson = new Gson();
+            Event event = gson.fromJson(ctx.body(), Event.class);
+            event.setEventId(id);
+            event = eventServices.updateEvent(event);
+            String eventJson = gson.toJson(event);
+            ctx.result(eventJson);
+            ctx.status(200);
+        } catch (NumberFormatException numberFormatException) {
+            ctx.result(numberFormatException.getMessage());
+            ctx.status(400);
+            throw new NumberFormatException("Failed to convert a String into an int");
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        } catch (ResourceNotFound resourceNotFound) {
+            ctx.result(resourceNotFound.getMessage());
+            ctx.status(404);
+            throw new ResourceNotFound("Did not receive a valid input");
+        }
     };
 
 }

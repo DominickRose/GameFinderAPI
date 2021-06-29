@@ -1,6 +1,8 @@
 package com.ismadoro.daos;
 
 import com.ismadoro.entities.Event;
+import com.ismadoro.exceptions.InvalidInput;
+import com.ismadoro.exceptions.ResourceNotFound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,10 @@ public class EventDaoLocal implements EventDao {
 
     @Override
     public Event addEvent(Event event) {
+        if (event.getEventDate() <= 0 || event.getMaxPlayers() <= 0)
+            throw new InvalidInput("Event_date and max_events must be greater than 0");
+        if (event.getCity() == null || event.getState() == null || event.getDescription() == null || event.getSkillLevel() == null || event.getEventTitle() == null || event.getEventType() == null)
+            throw new InvalidInput("One or more Event fields were invalid or null");
         int key = ++EventDaoLocal.idMaker;
         event.setEventId(key);
         EventDaoLocal.eventTable.put(key, event);
@@ -22,6 +28,10 @@ public class EventDaoLocal implements EventDao {
 
     @Override
     public Event getSingleEvent(int eventId) {
+        if (eventId < 0)
+            throw new InvalidInput("Invalid id for event");
+        if (!eventTable.containsKey(eventId))
+            throw new ResourceNotFound("No event with that id exists");
         return EventDaoLocal.eventTable.get(eventId);
     }
 
@@ -33,6 +43,10 @@ public class EventDaoLocal implements EventDao {
 
     @Override
     public Event updateEvent(Event event) {
+        if (event.getEventDate() <= 0 || event.getMaxPlayers() <= 0)
+            throw new InvalidInput("Event_date and max_events must be greater than 0");
+        if (event.getCity() == null || event.getState() == null || event.getDescription() == null || event.getSkillLevel() == null || event.getEventTitle() == null || event.getEventType() == null)
+            throw new InvalidInput("One or more Event fields were invalid or null");
         EventDaoLocal.eventTable.put(event.getEventId(), event);
         return event;
     }

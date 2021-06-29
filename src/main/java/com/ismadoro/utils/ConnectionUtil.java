@@ -9,9 +9,8 @@ import java.sql.SQLException;
 public class ConnectionUtil {
 
     public static Connection createConnection() {
-        // jdbc:postgresql:proj1-db.cpwt7piygmnx.us-east-1.rds.amazonaws.com:5432/postgres?user=postgres&password=password
         try {
-            Connection connection = DriverManager.getConnection("jdbc:postgresql:proj1-db.cpwt7piygmnx.us-east-1.rds.amazonaws.com:5432/postgres?user=postgres&password=password");
+            Connection connection = DriverManager.getConnection("jdbc:postgresql://proj1-db.cpwt7piygmnx.us-east-1.rds.amazonaws.com:5432/postgres?user=postgres&password=password");
             return connection;
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -20,7 +19,6 @@ public class ConnectionUtil {
 
     }
 
-    // quick way to test if successful
     public static void main(String[] args) {
         System.out.println(createConnection());
     }
