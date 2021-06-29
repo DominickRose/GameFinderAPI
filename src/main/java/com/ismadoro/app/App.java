@@ -44,7 +44,8 @@ public class App {
         RegistrationController registrationController = new RegistrationController(registrationService, playerService, eventServices);
 
         //get /events
-        app.get("/events", eventController.getAllEvents);
+        //Use the query parameter playerId= to search for all events a single player is registered for
+        app.get("/events", registrationController.getAllEventsWithConditions);
 
         //get /events/5
         app.get("/events/:id", eventController.getEventById);
@@ -65,6 +66,7 @@ public class App {
 
         //Get all players
         //Return 200 and JSON array of objects on success
+        //Use the query parameter eventId= to get all players registered for the given event
         app.get("/players", registrationController.getAllPlayersWithConditions);
 
         //Get single player

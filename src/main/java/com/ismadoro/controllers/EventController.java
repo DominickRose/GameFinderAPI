@@ -35,19 +35,19 @@ public class EventController {
         }
     };
 
-    public Handler getAllEvents = ctx -> {
-        try {
-            List<Event> events = this.eventServices.getSeveralEvents();
-            Gson gson = new Gson();
-            String eventJSON = gson.toJson(events);
-            ctx.result(eventJSON);
-            ctx.status(200);
-        } catch (JsonSyntaxException jsonSyntaxException) {
-            ctx.result(jsonSyntaxException.getMessage());
-            ctx.status(400);
-            throw new InvalidJson("Received malformed JSON");
-        }
-    };
+//    public Handler getAllEvents = ctx -> {
+//        try {
+//            List<Event> events = this.eventServices.getSeveralEvents();
+//            Gson gson = new Gson();
+//            String eventJSON = gson.toJson(events);
+//            ctx.result(eventJSON);
+//            ctx.status(200);
+//        } catch (JsonSyntaxException jsonSyntaxException) {
+//            ctx.result(jsonSyntaxException.getMessage());
+//            ctx.status(400);
+//            throw new InvalidJson("Received malformed JSON");
+//        }
+//    };
 
     public Handler getEventById = ctx -> {
         try {

@@ -1,6 +1,7 @@
 package com.ismadoro.controllers;
 
 import com.google.gson.Gson;
+import com.ismadoro.entities.Event;
 import com.ismadoro.entities.Player;
 import com.ismadoro.entities.Registration;
 import com.ismadoro.exceptions.ResourceNotFound;
@@ -88,11 +89,9 @@ public class RegistrationController {
             String event = ctx.queryParam("eventId");
 
             if (event != null) {
-                System.out.println(event);
                 List<Player> allPlayers = new ArrayList<>();
                 List<Integer> allPlayerIds = registrationService.getAllPlayersForEvent(Integer.parseInt(event));
                 for (Integer playerId : allPlayerIds) {
-                    System.out.println(playerId);
                     allPlayers.add(playerService.getSinglePlayer(playerId));
                 }
                 Gson gson = new Gson();
@@ -114,6 +113,29 @@ public class RegistrationController {
     };
 
     public Handler getAllEventsWithConditions = ctx -> {
-        //Intentionally left blank for right now.  Once Events are ready, I'll add a find by player feature using a query parameter
-    };
+        try {
+            String player = ctx.queryParam("playerId");
+
+            if (player != null) {
+                List<Event> allEvents = new ArrayList<>();
+                List<Integer> allEventIds = registrationService.getAllEventsForPlayer(Integer.parseInt(player));
+                for (Integer eventId : allEventIds) {
+                    allEvents.add(eventServices.getEventById(eventId));
+                }
+                Gson gson = new Gson();
+                String allPlayersJson = gson.toJson(allEvents);
+
+                ctx.result(allPlayersJson);
+                ctx.status(200);
+            } else {
+                List<Event> events = this.eventServices.getSeveralEvents();
+                Gson gson = new Gson();
+                String eventJSON = gson.toJson(events);
+                ctx.result(eventJSON);
+                ctx.status(200);
+            }
+        } catch (NumberFormatException e) {
+            ctx.result("Invalid search parameter, must be integer");
+            ctx.status(400);
+        }    };
 }
