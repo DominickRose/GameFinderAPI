@@ -1,24 +1,39 @@
 package com.ismadoro.app;
 
+
+import com.ismadoro.controllers.EventController;
+
+import com.ismadoro.daos.EventDao;
+import com.ismadoro.daos.EventDaoLocal;
+import com.ismadoro.daos.EventDaoPostgres;
 import com.ismadoro.controllers.PlayerController;
 import com.ismadoro.controllers.RegistrationController;
 import com.ismadoro.daos.PlayerDao;
 import com.ismadoro.daos.PlayerDaoLocal;
 import com.ismadoro.daos.RegistrationDao;
 import com.ismadoro.daos.RegistrationDaoLocal;
+
 import com.ismadoro.services.PlayerService;
 import com.ismadoro.services.PlayerServiceImpl;
 import com.ismadoro.services.RegistrationService;
 import com.ismadoro.services.RegistrationServiceImpl;
+import com.ismadoro.services.EventServices;
+import com.ismadoro.services.EventServicesImpl;
+
 import io.javalin.Javalin;
 
 public class App {
 
     public static void main(String[] args) {
+
         Javalin app = Javalin.create(javalinConfig -> {
             javalinConfig.enableCorsForAllOrigins();
             javalinConfig.enableDevLogging();
         });
+
+        EventDao eventDao = new EventDaoPostgres();
+        EventServices eventServices = new EventServicesImpl(eventDao);
+        EventController eventController = new EventController(eventServices);
 
         PlayerDao playerDao = new PlayerDaoLocal();
         PlayerService playerService = new PlayerServiceImpl(playerDao);
@@ -27,6 +42,22 @@ public class App {
         RegistrationDao registrationDao = new RegistrationDaoLocal();
         RegistrationService registrationService = new RegistrationServiceImpl(registrationDao);
         RegistrationController registrationController = new RegistrationController(registrationService, playerService);
+
+        //get /events
+        app.get("/events", eventController.getAllEvents);
+
+        //get /events/5
+        app.get("/events/:id", eventController.getEventById);
+
+        //post /event
+        app.post("/events", eventController.createEvent);
+
+        //put /event
+        app.put("/events/:id", eventController.updateEvent);
+
+        //delete /event
+        app.delete("/events/:id", eventController.deleteEvent);
+        
 
         //Create a new player
         //Return 201 and JSON representation of added object on success
@@ -84,5 +115,6 @@ public class App {
 
 
         app.start();
+
     }
 }
