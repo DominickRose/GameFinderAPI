@@ -57,7 +57,7 @@ public class App {
 
         //delete /event
         app.delete("/events/:id", eventController.deleteEvent);
-        
+
 
         //Create a new player
         //Return 201 and JSON representation of added object on success

@@ -15,6 +15,7 @@ public class RegistrationDaoLocal implements RegistrationDao{
     @Override
     public Registration addRegistration(Registration registration) {
         Integer id = idGenerator++;
+        registration.setRegistrationId(id);
         registrationMap.put(id, registration);
         return registrationMap.get(id);
     }
