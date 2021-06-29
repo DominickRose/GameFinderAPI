@@ -34,3 +34,43 @@ RESTful API for creating and accessing information on volleyball events
 + Deletes the player with the given id
   - Status Code 205: Succesfully deleted the object
   - Status Code 404: Object with the given ID could not be found   
+
+###Events
+
+**GET** /events
++ Returns an array with JSON objects representing all events 
+  - Status Code 200: Successful retrieval of all events
+  - Status Code 400: Failed to retrieve event due to malformed JSON
+    
+**GET** /events/id
++ Returns the Event object with the given id
+  - Status Code 200: Successful retrieval of specified event
+  - Status Code 400: Failed to retrieve event due to malformed JSON
+  - Status Code 400: Failed to retrieve event due to inputing a String as id
+  - Status Code 404: No event with that id could be found
+
+**GET** /events?title=${title}
++ Returns the Event with a title containing the text provided
+  - Status Code 200: Successful retrieval of specified event
+  - Status Code 400: Failed to retrieve event due to malformed JSON
+  - Status Code 400: Failed to retrieve event due to inputing a String as id
+  - Status Code 404: No event with that id could be found
+    
+**POST** /events
++ Creates a new Event object and adds it to database
+  - Status Code 201: Succesfully added new event to database
+  - Status Code 400: Failed to retrieve event due to malformed JSON
+    
+**PUT** /events/id
++ Updates the event with given id and returns a representation of the new object
+  - Status Code 200: Successful retrieval of specified event
+  - Status Code 400: Failed to retrieve event due to malformed JSON
+  - Status Code 400: Failed to retrieve event due to inputing a String as id
+  - Status Code 404: No event with that id could be found
+    
+**DELETE** /events/id
++ Deletes the evemtnt with the given id
+  - Status Code 205: Succesfully deleted the object
+  - Status Code 400: Failed to retrieve event due to malformed JSON
+  - Status Code 400: Failed to retrieve event due to inputing a String as id
+  - Status Code 404: No event with that id could be found
