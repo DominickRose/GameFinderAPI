@@ -69,8 +69,7 @@ public class TrieTree {
         }
 
         if(curNode.isWord)
-.
-        throw new DuplicateResourceException("This entry already exists!");
+            throw new DuplicateResourceException("This entry already exists!");
 
         curNode.isWord = true;
         curNode.id = id;
