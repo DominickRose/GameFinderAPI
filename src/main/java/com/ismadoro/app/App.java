@@ -3,15 +3,9 @@ package com.ismadoro.app;
 
 import com.ismadoro.controllers.EventController;
 
-import com.ismadoro.daos.EventDao;
-import com.ismadoro.daos.EventDaoLocal;
-import com.ismadoro.daos.EventDaoPostgres;
+import com.ismadoro.daos.*;
 import com.ismadoro.controllers.PlayerController;
 import com.ismadoro.controllers.RegistrationController;
-import com.ismadoro.daos.PlayerDao;
-import com.ismadoro.daos.PlayerDaoLocal;
-import com.ismadoro.daos.RegistrationDao;
-import com.ismadoro.daos.RegistrationDaoLocal;
 
 import com.ismadoro.services.PlayerService;
 import com.ismadoro.services.PlayerServiceImpl;
@@ -32,14 +26,17 @@ public class App {
         });
 
         EventDao eventDao = new EventDaoLocal();
+//        EventDao eventDao = new EventDaoPostgres();
         EventServices eventServices = new EventServicesImpl(eventDao);
         EventController eventController = new EventController(eventServices);
 
         PlayerDao playerDao = new PlayerDaoLocal();
+//        PlayerDao playerDao = new PlayerDaoPostgres();
         PlayerService playerService = new PlayerServiceImpl(playerDao);
         PlayerController playerController = new PlayerController(playerService);
 
         RegistrationDao registrationDao = new RegistrationDaoLocal();
+//        RegistrationDao registrationDao = new RegistrationDaoPostgres();
         RegistrationService registrationService = new RegistrationServiceImpl(registrationDao);
         RegistrationController registrationController = new RegistrationController(registrationService, playerService, eventServices);
 
