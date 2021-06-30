@@ -134,4 +134,8 @@ public class Player {
                 ", city='" + city + '\'' +
                 '}';
     }
+
+    public String getFullName() {
+        return this.firstName + this.lastName;
+    }
 }

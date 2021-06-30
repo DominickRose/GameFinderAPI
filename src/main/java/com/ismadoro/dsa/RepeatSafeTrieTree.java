@@ -38,7 +38,7 @@ public class RepeatSafeTrieTree {
     }
 
     private void removeWordAtCurNode(int id) {
-        curNode.isWord = false;
+        curNode.isWord = false; 
         curNode.idList.remove(new Integer(id));
         if (curNode.idList.size() == 0) {
             curNode.idList = null;
