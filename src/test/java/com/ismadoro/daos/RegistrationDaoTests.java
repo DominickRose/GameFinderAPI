@@ -13,19 +13,25 @@ import java.util.List;
 import java.util.UUID;
 
 public class RegistrationDaoTests {
-    private static RegistrationDao registrationDao = new RegistrationDaoLocal();
-    private static PlayerDao playerDao = new PlayerDaoLocal();
-    private static EventDao eventDao = new EventDaoLocal(); //Initialize once finished
+//    private static RegistrationDao registrationDao = new RegistrationDaoLocal();
+    private static RegistrationDao registrationDao = new RegistrationDaoPostgres();
 
-    private static final Player testPlayer1 = new Player(0, "Player", "One", UUID.randomUUID().toString(), "test", true, "a@email.com", "1234567890", "WA", "Spokane", "");;
-    private static final Player testPlayer2 = new Player(0, "Player", "Two", UUID.randomUUID().toString(), "test", true, "a@email.com", "1234567890", "WA", "Spokane", "");;
+//    private static PlayerDao playerDao = new PlayerDaoLocal();
+    private static PlayerDao playerDao = new PlayerDaoPostgres();
+
+//    private static EventDao eventDao = new EventDaoLocal();
+    private static EventDao eventDao = new EventDaoPostgres();
+
+
+    private static final Player testPlayer1 = new Player(0, "Player", "One", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "1234567890", "WA", "Spokane", "");;
+    private static final Player testPlayer2 = new Player(0, "Player", "Two", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "1234567890", "WA", "Spokane", "");;
 
     //Once Events are finished, initialize these
     private static Event testEvent1 = null;
     private static Event testEvent2 = null;
 
-    private final Registration testRegistration = new Registration(0, testPlayer1.getPlayerId(), 1); //Edit this to be testEvent1 id once that's completed
-    private final Registration testRegistration2 = new Registration(0, testPlayer2.getPlayerId(), 2); //Edit this to be testEvent1 id once that's completed
+    private final Registration testRegistration = new Registration(0, 0, 0); //Edit this to be testEvent1 id once that's completed
+    private final Registration testRegistration2 = new Registration(0, 0, 0); //Edit this to be testEvent1 id once that's completed
 
     @BeforeClass
     void setup() {
@@ -37,6 +43,12 @@ public class RegistrationDaoTests {
 
         eventDao.addEvent(testEvent1); //Refactor these once complete
         eventDao.addEvent(testEvent2);
+
+        testRegistration.setPlayerId(testPlayer1.getPlayerId());
+        testRegistration.setEventId(testEvent1.getEventId());
+
+        testRegistration2.setPlayerId(testPlayer2.getPlayerId());
+        testRegistration2.setEventId(testEvent2.getEventId());
     }
 
     @AfterClass
