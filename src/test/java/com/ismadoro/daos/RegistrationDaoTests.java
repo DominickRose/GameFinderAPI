@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class RegistrationDaoTests {
-//    private static RegistrationDao registrationDao = new RegistrationDaoLocal();
-    private static RegistrationDao registrationDao = new RegistrationDaoPostgres();
+    private static RegistrationDao registrationDao = new RegistrationDaoLocal();
+//    private static RegistrationDao registrationDao = new RegistrationDaoPostgres();
 
-//    private static PlayerDao playerDao = new PlayerDaoLocal();
-    private static PlayerDao playerDao = new PlayerDaoPostgres();
+    private static PlayerDao playerDao = new PlayerDaoLocal();
+//    private static PlayerDao playerDao = new PlayerDaoPostgres();
 
-//    private static EventDao eventDao = new EventDaoLocal();
-    private static EventDao eventDao = new EventDaoPostgres();
+    private static EventDao eventDao = new EventDaoLocal();
+//    private static EventDao eventDao = new EventDaoPostgres();
 
 
     private static final Player testPlayer1 = new Player(0, "Player", "One", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "1234567890", "WA", "Spokane", "");;
