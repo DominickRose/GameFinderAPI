@@ -17,8 +17,12 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     public PlayerServiceImpl(PlayerDao playerDao) {
-        this.playerTree = new RepeatSafeTrieTree();
         this.playerDao = playerDao;
+        this.playerTree = new RepeatSafeTrieTree();
+        List<Player> allPlayersInDatabase = getAllPlayers();
+        for (Player player : allPlayersInDatabase) {
+            this.playerTree.addWord(player.getFullName(), player.getPlayerId());
+        }
     }
 
     @Override
