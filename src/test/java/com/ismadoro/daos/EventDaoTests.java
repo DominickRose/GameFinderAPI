@@ -33,7 +33,6 @@ public class EventDaoTests {
     void addEventPass() {
         Event event = eventDao.addEvent(testEvent);
         Assert.assertNotEquals(event.getEventId(), 0);
-        Assert.fail();
     }
 
     @Test(priority = 2)
