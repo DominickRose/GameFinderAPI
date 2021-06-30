@@ -6,6 +6,7 @@ public class Player {
     private String lastName;
     private String username;
     private String password;
+    private String bio;
     private boolean visible;
     private String email;
     private String phoneNumber;
@@ -15,7 +16,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, String phoneNumber, String state, String city) {
+    public Player(int playerId, String firstName, String lastName, String username, String password, boolean visible, String email, String phoneNumber, String state, String city, String bio) {
         this.playerId = playerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,6 +26,8 @@ public class Player {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.state = state;
+        this.city = city;
+        this.bio = bio;
     }
 
     public int getPlayerId() {
@@ -107,6 +110,14 @@ public class Player {
         this.city = city;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -115,8 +126,12 @@ public class Player {
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", bio='" + bio + '\'' +
                 ", visible=" + visible +
                 ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", state='" + state + '\'' +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

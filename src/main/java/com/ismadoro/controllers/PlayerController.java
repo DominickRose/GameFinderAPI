@@ -33,13 +33,13 @@ public class PlayerController {
         }
     };
 
-    public Handler getAllPlayers = ctx -> {
-        List<Player> allPlayers = playerService.getAllPlayers();
-        Gson gson = new Gson();
-        String allPlayersJson = gson.toJson(allPlayers);
-        ctx.result(allPlayersJson);
-        ctx.status(200);
-    };
+//    public Handler getAllPlayers = ctx -> {
+//        List<Player> allPlayers = playerService.getAllPlayers();
+//        Gson gson = new Gson();
+//        String allPlayersJson = gson.toJson(allPlayers);
+//        ctx.result(allPlayersJson);
+//        ctx.status(200);
+//    };
 
     public Handler getSinglePlayer = ctx -> {
         try {

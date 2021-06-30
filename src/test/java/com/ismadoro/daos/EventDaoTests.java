@@ -4,7 +4,7 @@ import com.ismadoro.daos.EventDao;
 import com.ismadoro.daos.EventDaoLocal;
 import com.ismadoro.daos.EventDaoPostgres;
 import com.ismadoro.entities.Event;
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 

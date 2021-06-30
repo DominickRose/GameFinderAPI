@@ -2,7 +2,7 @@ package com.ismadoro.services;
 
 import com.ismadoro.daos.EventDao;
 import com.ismadoro.entities.Event;
-import org.junit.Assert;
+import org.testng.Assert;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

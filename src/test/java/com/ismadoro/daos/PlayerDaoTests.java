@@ -12,8 +12,8 @@ import java.util.List;
 public class PlayerDaoTests {
 
     private static final PlayerDao playerDao = new PlayerDaoLocal();
-    private static final Player testPlayer = new Player(0, "Test", "Player", "testPlayer", "test", true, "a@email.com", "0", "WA", "");
-    private static final Player testPlayer2 = new Player(0, "Test2", "Player", "testPlayer2", "test", false, "b@email.com", "0", "UT", "");
+    private static final Player testPlayer = new Player(0, "Test", "Player", "testPlayer", "test", true, "a@email.com", "0", "WA", "", "");
+    private static final Player testPlayer2 = new Player(0, "Test2", "Player", "testPlayer2", "test", false, "b@email.com", "0", "UT", "", "");
 
 
     @Test(priority = 1)
@@ -74,7 +74,7 @@ public class PlayerDaoTests {
 
     @Test(priority = 4)
     void testUpdateUnregisteredPlayer() {
-        Player unregisteredPlayer = new Player(0, "Unregistered", "Player", "unregistered", "player", true, "c@email.com", "0", "WA", "");
+        Player unregisteredPlayer = new Player(0, "Unregistered", "Player", "unregistered", "player", true, "c@email.com", "0", "WA", "", "");
         try {
             playerDao.updatePlayer(unregisteredPlayer);
             Assert.fail();
