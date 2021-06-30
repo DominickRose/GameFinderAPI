@@ -25,7 +25,7 @@ public class App {
             javalinConfig.enableDevLogging();
         });
 
-        EventDao eventDao = new EventDaoPostgres();
+        EventDao eventDao = new EventDaoLocal();
         EventServices eventServices = new EventServicesImpl(eventDao);
         EventController eventController = new EventController(eventServices);
 
@@ -47,13 +47,13 @@ public class App {
         //get /events/5
         app.get("/events/:id", eventController.getEventById);
 
-        //post /event
+        //post /events
         app.post("/events", eventController.createEvent);
 
-        //put /event
+        //put /events
         app.put("/events/:id", eventController.updateEvent);
 
-        //delete /event
+        //delete /events
         app.delete("/events/:id", eventController.deleteEvent);
 
 
@@ -86,7 +86,6 @@ public class App {
         //Return 400 for request body that lacks "username" and "password"
         //Return 422 for invalid credentials
         app.post("/players/login", playerController.login);
-
 
 
         //Create a new registration
