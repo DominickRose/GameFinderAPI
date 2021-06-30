@@ -37,9 +37,12 @@ public class RepeatSafeTrieTree {
         return true;
     }
 
-    private void removeWordAtCurNode() {
+    private void removeWordAtCurNode(int id) {
         curNode.isWord = false;
-        curNode.idList = null;
+        curNode.idList.remove(new Integer(id));
+        if (curNode.idList.size() == 0) {
+            curNode.idList = null;
+        }
     }
 
     private void recursiveHelper(RepeatSafeTrieNode node, ArrayList<Integer> curList) {
@@ -78,11 +81,11 @@ public class RepeatSafeTrieTree {
         return true;
     }
 
-    public boolean removeWord(String word) {
+    public boolean removeWord(String word, int id) {
         //Soft delete
         //Can delete nodes later if trie uses up too much memory
         if(traverseTo(word)) {
-            removeWordAtCurNode();
+            removeWordAtCurNode(id);
             return true;
         }
         return false;
@@ -99,7 +102,7 @@ public class RepeatSafeTrieTree {
             RepeatSafeTrieNode nodePos = curNode;
             if(addWord(newWord, prevId)) {
                 curNode = nodePos;
-                removeWordAtCurNode();
+                removeWordAtCurNode(prevId);
                 return true;
             }
             return false;

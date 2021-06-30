@@ -64,13 +64,13 @@ public class RepeatSafeTrieTreeTests {
     @Test(priority = 2, dependsOnMethods = { "testAddWord" })
     void testRemoveWord() {
         trie.addWord("Annabelle", 2);
-        Assert.assertTrue(trie.removeWord("Annabelle"));
+        Assert.assertTrue(trie.removeWord("Annabelle", 2));
     }
 
     @Test(priority = 2)
     void testRemoveWordInvalid() {
         try {
-            trie.removeWord("Empty");
+            trie.removeWord("Empty", 0);
             Assert.fail();
         } catch (ResourceNotFound exception) {
             //Success
@@ -96,7 +96,7 @@ public class RepeatSafeTrieTreeTests {
     @Test(priority = 3, dependsOnMethods = { "testAddWord", "testGetIdAt" })
     void testRemoveWordEnsure() {
         trie.addWord("Alex", 3);
-        trie.removeWord("Alex");
+        trie.removeWord("Alex", 3);
         try {
             trie.getIdAt("Alex");
             Assert.fail();
