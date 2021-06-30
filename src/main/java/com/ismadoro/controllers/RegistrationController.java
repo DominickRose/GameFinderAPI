@@ -109,8 +109,20 @@ public class RegistrationController {
     public Handler getAllPlayersWithConditions = ctx -> {
         try {
             String event = ctx.queryParam("eventId");
+            String name = ctx.queryParam("name");
 
-            if (event != null) {
+            if (name != null) {
+                List<Player> allPlayers = new ArrayList<>();
+                List<Integer> allPlayerIds = playerService.searchForPlayersByName(name);
+                for (Integer playerId : allPlayerIds) {
+                    allPlayers.add(playerService.getSinglePlayer(playerId));
+                }
+                Gson gson = new Gson();
+                String allPlayersJson = gson.toJson(allPlayers);
+
+                ctx.result(allPlayersJson);
+                ctx.status(200);
+            } else if (event != null) {
                 List<Player> allPlayers = new ArrayList<>();
                 List<Integer> allPlayerIds = registrationService.getAllPlayersForEvent(Integer.parseInt(event));
                 for (Integer playerId : allPlayerIds) {
@@ -131,6 +143,9 @@ public class RegistrationController {
         } catch (NumberFormatException e) {
             ctx.result("Invalid search parameter, must be integer");
             ctx.status(400);
+        } catch (ResourceNotFound e ) {
+            ctx.result("[]");
+            ctx.status(200);
         }
     };
 

@@ -17,6 +17,7 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     public PlayerServiceImpl(PlayerDao playerDao) {
+        this.playerTree = new RepeatSafeTrieTree();
         this.playerDao = playerDao;
     }
 
