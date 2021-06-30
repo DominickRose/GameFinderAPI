@@ -28,6 +28,10 @@ public class EventController {
             String eventJSON = gson.toJson(event);
             ctx.result(eventJSON);
             ctx.status(201);
+        } catch (NumberFormatException numberFormatException) {
+            ctx.result(numberFormatException.getMessage());
+            ctx.status(400);
+            throw new NumberFormatException("Invalid value for int");
         } catch (JsonSyntaxException jsonSyntaxException) {
             ctx.result(jsonSyntaxException.getMessage());
             ctx.status(400);
