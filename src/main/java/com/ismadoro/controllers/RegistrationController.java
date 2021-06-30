@@ -33,9 +33,14 @@ public class RegistrationController {
             Gson gson = new Gson();
             Registration newRegistration = gson.fromJson(ctx.body(), Registration.class);
             Registration addedRegistration = this.registrationService.addRegistration(newRegistration);
-            String registrationJson = gson.toJson(addedRegistration);
-            ctx.result(registrationJson);
-            ctx.status(201);
+            if (addedRegistration == null) {
+                ctx.result("Invalid event or player id provided");
+                ctx.status(422);
+            } else {
+                String registrationJson = gson.toJson(addedRegistration);
+                ctx.result(registrationJson);
+                ctx.status(201);
+            }
         } catch (JsonSyntaxException | NullPointerException e) {
             ctx.result("Invalid JSON Body");
             ctx.status(400);
@@ -69,9 +74,14 @@ public class RegistrationController {
             Registration newRegistration = gson.fromJson(ctx.body(), Registration.class);
             newRegistration.setRegistrationId(Integer.parseInt(ctx.pathParam("id")));
             Registration registration = registrationService.updateRegistration(newRegistration);
-            String registrationJson = gson.toJson(registration);
-            ctx.result(registrationJson);
-            ctx.status(200);
+            if (registration == null) {
+                ctx.result("Invalid event or player id provided");
+                ctx.status(422);
+            } else {
+                String registrationJson = gson.toJson(registration);
+                ctx.result(registrationJson);
+                ctx.status(200);
+            }
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
