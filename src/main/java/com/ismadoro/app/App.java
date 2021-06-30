@@ -65,6 +65,7 @@ public class App {
         //Get all players
         //Return 200 and JSON array of objects on success
         //Use the query parameter eventId= to get all players registered for the given event
+        //Use the query parameter name= to get all players whose names start as given
         app.get("/players", registrationController.getAllPlayersWithConditions);
 
         //Get single player

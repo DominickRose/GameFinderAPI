@@ -1,6 +1,7 @@
 package com.ismadoro.services;
 
 import com.ismadoro.daos.PlayerDao;
+import com.ismadoro.dsa.RepeatSafeTrieTree;
 import com.ismadoro.entities.Player;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -19,15 +20,21 @@ public class PlayerServiceTests {
 
     @BeforeMethod
     void playerDaoSetup() {
-        Player testPlayer1 = new Player(1, "Test", "Player", "test1", "test", true, "a@email.com", "1234567890", "WA", "", "");
-        Player testPlayer2 = new Player(2, "Test", "Player", "test2", "test2", true, "a@email.com", "1234567890", "UT", "", "");
+        Player testPlayer1 = new Player(1, "Test", "Play", "test1", "test", true, "a@email.com", "1234567890", "WA", "", "");
+        Player testPlayer2 = new Player(2, "Test", "Playe", "test2", "test2", true, "a@email.com", "1234567890", "UT", "", "");
         Player testPlayer3 = new Player(3, "Test", "Player", "test3", "test3", true, "a@email.com", "1234567890", "WA", "", "");
         List<Player> mockList = new ArrayList<>();
         mockList.add(testPlayer1);
         mockList.add(testPlayer2);
         mockList.add(testPlayer3);
+
+        RepeatSafeTrieTree mockTrieTree = new RepeatSafeTrieTree();
+        mockTrieTree.addWord(testPlayer1.getFullName(), testPlayer1.getPlayerId());
+        mockTrieTree.addWord(testPlayer2.getFullName(), testPlayer2.getPlayerId());
+        mockTrieTree.addWord(testPlayer3.getFullName(), testPlayer3.getPlayerId());
+
         Mockito.when(mockPlayerDao.getAllPlayers()).thenReturn(mockList);
-        playerService = new PlayerServiceImpl(mockPlayerDao);
+        playerService = new PlayerServiceImpl(mockPlayerDao, mockTrieTree);
     }
 
     @Test(priority = 1)
@@ -58,5 +65,23 @@ public class PlayerServiceTests {
     void testValidLoginInvalidPassword() {
         Player result = playerService.validateLogin("test1", "test2");
         Assert.assertNull(result);
+    }
+
+    @Test(priority = 3)
+    void testGetMostNames() {
+        List<Integer> searchResults = playerService.searchForPlayersByName("TestPlay");
+        Assert.assertEquals(searchResults.size(), 3);
+    }
+
+    @Test(priority = 3)
+    void testGetMiddleNames() {
+        List<Integer> searchResults = playerService.searchForPlayersByName("TestPlaye");
+        Assert.assertEquals(searchResults.size(), 2);
+    }
+
+    @Test(priority = 3)
+    void testGetLeastNames() {
+        List<Integer> searchResults = playerService.searchForPlayersByName("TestPlayer");
+        Assert.assertEquals(searchResults.size(), 1);
     }
 }
