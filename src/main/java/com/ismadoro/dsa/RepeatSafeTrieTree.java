@@ -1,25 +1,24 @@
 package com.ismadoro.dsa;
 
-import com.ismadoro.dsa.TrieNode;
-import com.ismadoro.entities.Player;
 import com.ismadoro.exceptions.DuplicateResourceException;
-import com.ismadoro.exceptions.ResourceNotFound;
 import com.ismadoro.exceptions.InvalidParamException;
+import com.ismadoro.exceptions.ResourceNotFound;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrieTree {
-    private final TrieNode root;
-    private TrieNode curNode;
+public class RepeatSafeTrieTree {
+    private final RepeatSafeTrieNode root;
+    private RepeatSafeTrieNode curNode;
     //Est. 250k * 109 bytes per node = 27MB Capacity
     private final int maxNodes = 250000;
     private int curNodes = 0;
 
 
-    public TrieTree() {
-        root = new TrieNode();
+    public RepeatSafeTrieTree() {
+        root = new RepeatSafeTrieNode();
     }
+
     private int charToIndex(char c) {
         //Convert letter to lowercase and check if its valid
         int curIndex = (c | 32) - 'a';
@@ -37,13 +36,15 @@ public class TrieTree {
         }
         return true;
     }
+
     private void removeWordAtCurNode() {
         curNode.isWord = false;
-        curNode.id = -1;
+        curNode.idList = null;
     }
-    private void recursiveHelper(TrieNode node, ArrayList<Integer> curList) {
+
+    private void recursiveHelper(RepeatSafeTrieNode node, ArrayList<Integer> curList) {
         //BUG - VERY dangerous Stackoverflow is possible for huge strings!
-        if(node.id != -1) curList.add(node.id);
+        if(node.idList != null) curList.addAll(node.idList);
         for(int i = 0; i < 26; ++i) {
             if(node.children[i] != null) recursiveHelper(node.children[i], curList);
         }
@@ -55,26 +56,28 @@ public class TrieTree {
         if(word.length() > 100)
             throw new InvalidParamException("Word cannot exceed 100 characters");
 
-        TrieNode curNode = root;
+        RepeatSafeTrieNode curNode = root;
         for(int i = 0; i < word.length(); ++i) {
             int curIndex = charToIndex(word.charAt(i));
             if(curNode.children[curIndex] == null) {
                 if(curNodes >= maxNodes)
                     throw new OutOfMemoryError("Trie is full more words cannot be added");
 
-                curNode.children[curIndex] = new TrieNode();
+                curNode.children[curIndex] = new RepeatSafeTrieNode();
                 ++curNodes;
             }
             curNode = curNode.children[curIndex];
         }
 
-        if(curNode.isWord)
-            throw new DuplicateResourceException("This entry already exists!");
+        if(curNode.idList == null) {
+            curNode.idList = new ArrayList<>();
+        }
 
         curNode.isWord = true;
-        curNode.id = id;
+        curNode.idList.add(id);
         return true;
     }
+
     public boolean removeWord(String word) {
         //Soft delete
         //Can delete nodes later if trie uses up too much memory
@@ -84,16 +87,17 @@ public class TrieTree {
         }
         return false;
     }
-    public boolean updateWord(String prevWord, String newWord) {
+
+    public boolean updateWord(String prevWord, int prevId, String newWord) {
         //This works assuming the ids will always stay the same
         if(traverseTo(prevWord)) {
-            int curId = curNode.id;
-            if(curId == -1)
+            List<Integer> curId = curNode.idList;
+            if(curId == null || !curId.contains(prevId))
                 throw new ResourceNotFound("Previous word does not exist in the Trie");
 
             //Ensure we are not updating to a duplicate
-            TrieNode nodePos = curNode;
-            if(addWord(newWord, curId)) {
+            RepeatSafeTrieNode nodePos = curNode;
+            if(addWord(newWord, prevId)) {
                 curNode = nodePos;
                 removeWordAtCurNode();
                 return true;
@@ -102,10 +106,11 @@ public class TrieTree {
         }
         return false;
     }
-    public int getIdAt(String word) {
-        int curId = -1;
-        if(traverseTo(word)) curId = curNode.id;
-        if(curId == -1) throw new ResourceNotFound("No id found at position specified");
+
+    public List<Integer> getIdAt(String word) {
+        List<Integer> curId = null;
+        if(traverseTo(word)) curId = curNode.idList;
+        if(curId == null) throw new ResourceNotFound("No id found at position specified");
         return curId;
     }
 
