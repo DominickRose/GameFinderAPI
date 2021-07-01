@@ -70,7 +70,7 @@ public class EventDaoPostgres implements EventDao {
 
             event.setOwnerId(rs.getInt("owner_id"));
             event.setEventId(rs.getInt("event_id"));
-            event.setEventDate(rs.getFloat("event_date"));
+            event.setEventDate(rs.getLong("event_date"));
             event.setCity(rs.getString("city"));
             event.setState(rs.getString("state"));
             event.setDescription(rs.getString("description"));
@@ -102,7 +102,7 @@ public class EventDaoPostgres implements EventDao {
                 Event event = new Event();
                 event.setOwnerId(rs.getInt("owner_id"));
                 event.setEventId(rs.getInt("event_id"));
-                event.setEventDate(rs.getFloat("event_date"));
+                event.setEventDate(rs.getLong("event_date"));
                 event.setCity(rs.getString("city"));
                 event.setState(rs.getString("state"));
                 event.setDescription(rs.getString("description"));

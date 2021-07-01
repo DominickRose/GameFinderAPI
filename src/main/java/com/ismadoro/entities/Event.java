@@ -3,7 +3,7 @@ package com.ismadoro.entities;
 public class Event {
     private int ownerId;
     private int eventId;
-    private float eventDate;
+    private long eventDate;
     private String city;
     private String state;
     private String description;
@@ -15,7 +15,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(int ownerId, int eventId, float eventDate, String city, String state, String description, String skillLevel, String eventTitle, String eventType, int maxPlayers) {
+    public Event(int ownerId, int eventId, long eventDate, String city, String state, String description, String skillLevel, String eventTitle, String eventType, int maxPlayers) {
         this.ownerId = ownerId;
         this.eventId = eventId;
         this.eventDate = eventDate;
@@ -44,11 +44,11 @@ public class Event {
         this.eventId = eventId;
     }
 
-    public float getEventDate() {
+    public long getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(float eventDate) {
+    public void setEventDate(long eventDate) {
         this.eventDate = eventDate;
     }
 
