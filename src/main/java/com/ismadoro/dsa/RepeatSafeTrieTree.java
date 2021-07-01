@@ -93,6 +93,8 @@ public class RepeatSafeTrieTree {
 
     public boolean updateWord(String prevWord, int prevId, String newWord) {
         //This works assuming the ids will always stay the same
+        if(prevWord.equals(newWord))
+            return false;
         if(traverseTo(prevWord)) {
             List<Integer> curId = curNode.idList;
             if(curId == null || !curId.contains(prevId))

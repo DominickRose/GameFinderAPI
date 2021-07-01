@@ -41,22 +41,47 @@ public class EventController {
     };
 
 
-    public Handler getEventByTitle = ctx -> {
+    public Handler getEventBySearch = ctx -> {
         try {
             JsonElement jElement = JsonParser.parseString(ctx.body());
             List<Event> events = new ArrayList<>();
+            Gson gson = new Gson();
+
             if (!jElement.isJsonNull()) {
                 JsonObject jObject = jElement.getAsJsonObject();
+
                 JsonElement title = jObject.get("eventTitle");
-                String eventTitle = title.getAsString();
-                events = eventServices.getEventsByTitle(eventTitle);
-                Gson gson = new Gson();
+                JsonElement place = jObject.get("eventState");
+                JsonElement time = jObject.get("eventTime");
+                JsonElement type = jObject.get("eventType");
+                JsonElement skill = jObject.get("eventSkill");
+
+
+                if (!title.isJsonNull()) {
+                    String eventTitle = title.getAsString();
+                    events = eventServices.getEventsByTitle(eventTitle);
+                }
+                if (!place.isJsonNull()) {
+                    String eventPlace = place.getAsString();
+                    events = eventServices.getEventsByPlace(eventPlace);
+                }
+                if (!time.isJsonNull()) {
+                    long eventTime = time.getAsLong();
+                    events = eventServices.getEventsByTime(eventTime);
+                }
+                if (!type.isJsonNull()) {
+                    String eventType = type.getAsString();
+                }
+                if (!skill.isJsonNull()) {
+                    String eventSkill = skill.getAsString();
+                }
+
+
                 String eventJSON = gson.toJson(events);
                 ctx.result(eventJSON);
                 ctx.status(200);
                 ctx.contentType("application/json");
             } else {
-                Gson gson = new Gson();
                 String eventJSON = gson.toJson(events);
                 ctx.result(eventJSON);
                 ctx.status(200);
@@ -65,7 +90,7 @@ public class EventController {
             ctx.result(jsonSyntaxException.getMessage());
             ctx.status(400);
             throw new InvalidJson("Received malformed JSON");
-        } catch (ResourceNotFound resourceNotFound){
+        } catch (ResourceNotFound resourceNotFound) {
             ctx.result("Resource not found");
             ctx.status(404);
         }

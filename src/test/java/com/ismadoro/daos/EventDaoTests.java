@@ -13,14 +13,14 @@ import java.util.List;
 public class EventDaoTests {
 
     static EventDao eventDao = new EventDaoLocal();
-//        static EventDao eventDao = new EventDaoPostgres();
-    static Event testEvent = new Event(0, 0, 111, "Chicago", "Illinois", "Lalalala", "easy", "Fun Times", "game", 3);
+    //        static EventDao eventDao = new EventDaoPostgres();
+    static Event testEvent = new Event(0, 0, 111, "Chicago", "IL", "Lalalala", "easy", "Fun Times", "game", 3);
 
     @AfterMethod
     void GetTestEventCopy() {
         testEvent.setEventDate(111);
         testEvent.setCity("Chicago");
-        testEvent.setState("Illinois");
+        testEvent.setState("IL");
         testEvent.setDescription("Lalalala");
         testEvent.setSkillLevel("easy");
         testEvent.setEventTitle("Fun Times");
@@ -221,17 +221,17 @@ public class EventDaoTests {
 
     @Test(priority = 21)
     void deleteEventPass() {
-        Event delEvent = new Event(0, 0, 222, "Washington", "District of Colombia", "", "easy", "Hard Times", "game", 5);
+        Event delEvent = new Event(0, 0, 222, "Washington", "DC", "", "easy", "Hard Times", "game", 5);
         Event event = eventDao.addEvent(delEvent);
         boolean result = eventDao.deleteEvent(event.getEventId());
         Assert.assertTrue(result);
     }
 
-    @Test(priority = 22, dependsOnMethods = "addEventPass")
+    @Test(priority = 22, dependsOnMethods = {"addEventPass", "deleteEventPass"})
     void getAllEventsPass() {
-        Event event1 = new Event(0, 0, 222, "Washington", "District of Colombia", "", "easy", "Hard Times", "game", 5);
-        Event event2 = new Event(0, 0, 333, "New York", "New York State", "", "easy", "Loud Times", "game", 10);
-        Event event3 = new Event(0, 0, 444, "Atlanta", "Georgia", "", "easy", "Fresh Times", "game", 15);
+        Event event1 = new Event(0, 0, 222, "Washington", "DC", "", "easy", "Hard Times", "game", 5);
+        Event event2 = new Event(0, 0, 333, "New York", "NY", "", "easy", "Loud Times", "game", 10);
+        Event event3 = new Event(0, 0, 444, "Atlanta", "GA", "", "easy", "Fresh Times", "game", 15);
         eventDao.addEvent(event1);
         eventDao.addEvent(event2);
         eventDao.addEvent(event3);
@@ -242,20 +242,38 @@ public class EventDaoTests {
         eventDao.deleteEvent(event3.getEventId());
     }
 
-    @Test(priority = 23, dependsOnMethods = "addEventPass")
+    @Test(priority = 23, dependsOnMethods = {"addEventPass", "deleteEventPass"})
     void getEventsByTitlePass() {
-        Event event1 = new Event(0, 0, 222, "Washington", "District of Colombia", "", "easy", "hardtimes", "game", 5);
-        Event event2 = new Event(0, 0, 333, "New York", "New York State", "", "easy", "loudtimes", "game", 10);
-        Event event3 = new Event(0, 0, 444, "Atlanta", "Georgia", "", "easy", "freshtimes", "game", 15);
+        Event event1 = new Event(0, 0, 222, "Washington", "DC", "", "easy", "Louder Times", "game", 5);
+        Event event2 = new Event(0, 0, 333, "New York", "NY", "", "easy", "Loudest Times", "game", 10);
+        Event event3 = new Event(0, 0, 444, "Atlanta", "GA", "", "easy", "Fresh Times", "game", 15);
         eventDao.addEvent(event1);
         eventDao.addEvent(event2);
         eventDao.addEvent(event3);
         List<Event> events = eventDao.getEventsByTitle("loud");
-        Assert.assertEquals(events.size(), 1);
-        Assert.assertEquals(events.get(0).getEventTitle(), "loudtimes");
+        Assert.assertEquals(events.size(), 2);
+        Assert.assertEquals(events.get(0).getEventTitle(), "Louder Times");
+        Assert.assertEquals(events.get(1).getEventTitle(), "Loudest Times");
         eventDao.deleteEvent(event1.getEventId());
         eventDao.deleteEvent(event2.getEventId());
         eventDao.deleteEvent(event3.getEventId());
-        }
+    }
+
+    @Test(priority = 24, dependsOnMethods = {"addEventPass", "deleteEventPass"})
+    void getEventsByPlacePass() {
+        Event event1 = new Event(0, 0, 222, "Washington", "DC", "", "easy", "Hard Times", "game", 5);
+        Event event2 = new Event(0, 0, 333, "New York", "NY", "", "easy", "Loud Times", "game", 10);
+        Event event3 = new Event(0, 0, 444, "Charlotte", "NC", "", "easy", "Fresh Times", "game", 15);
+        eventDao.addEvent(event1);
+        eventDao.addEvent(event2);
+        eventDao.addEvent(event3);
+        List<Event> events = eventDao.getEventsByPlace("n");
+        Assert.assertEquals(events.size(), 2);
+        Assert.assertEquals(events.get(0).getEventTitle(), "Fresh Times");
+        Assert.assertEquals(events.get(1).getEventTitle(), "Loud Times");
+        eventDao.deleteEvent(event1.getEventId());
+        eventDao.deleteEvent(event2.getEventId());
+        eventDao.deleteEvent(event3.getEventId());
+    }
 }
 
