@@ -52,7 +52,7 @@ public class App {
         app.post("/events", eventController.createEvent);
 
         //post /events/search
-        app.post("/events/search", eventController.getEventByTitle);
+        app.post("/events/search", eventController.getEventBySearch);
 
         //put /events
         app.put("/events/:id", eventController.updateEvent);

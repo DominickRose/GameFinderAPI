@@ -20,6 +20,11 @@ public class EventDaoPostgres implements EventDao {
     }
 
     @Override
+    public String placeTrimmer(int eventId) {
+        return null;
+    }
+
+    @Override
     public Event addEvent(Event event) {
         try (Connection connection = ConnectionUtil.createConnection()) {
 
@@ -122,6 +127,16 @@ public class EventDaoPostgres implements EventDao {
 
     @Override
     public List<Event> getEventsByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public List<Event> getEventsByPlace(String place) {
+        return null;
+    }
+
+    @Override
+    public List<Event> getEventsByTime(long time) {
         return null;
     }
 
