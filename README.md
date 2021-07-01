@@ -94,6 +94,12 @@ RESTful API for creating and accessing information on volleyball events
   - Status Code 400: Invalid JSON Body
   - Status Code 422: Either the given parent or event ID do not exist
   
+**GET** /registration/playerId/eventId
++ Returns a JSON indicating whether the player with the given ID is registered for the event with the given ID
+  - Status Code 200: Successfully returned a JSON indicating registration status
+  - Status Code 400: Invalid pathParameters provided
+  - Status Code 404: The given IDs could not be found
+
 **DELETE** /registration/playerId/eventId
 + Deletes the registration connected to the given player and event id
   - Status Code 205: Succesfully deleted the object

@@ -119,6 +119,25 @@ public class RegistrationController {
         }
     };
 
+    public Handler isPlayerRegisteredForEvent = ctx -> {
+      try {
+          boolean result = registrationService.isPlayerRegisteredForEvent(Integer.parseInt(ctx.pathParam("playerId")), Integer.parseInt(ctx.pathParam("eventId")));
+          Gson gson = new Gson();
+          if (result) {
+              ctx.result(gson.toJson("{registered: true}"));
+          } else {
+              ctx.result(gson.toJson("{registered: false}"));
+          }
+          ctx.status(200);
+      } catch (NumberFormatException e) {
+          ctx.result("Invalid ID in path param");
+          ctx.status(400);
+      } catch (ResourceNotFound e) {
+          ctx.result("No resource with that ID exists");
+          ctx.status(404);
+      }
+    };
+
 
     public Handler getAllPlayersWithConditions = ctx -> {
         try {

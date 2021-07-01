@@ -106,6 +106,11 @@ public class App {
         //Return 404 for invalid ID
         app.get("/registrations/:id", registrationController.getSingleRegistration);
 
+        //Check if a player is registered for a specific event
+        //Return 200 and a JSON indicating whether or not the player is registered
+        //Return 400 if path parameters are invalid
+        app.get("/registrations/:playerId/:eventId", registrationController.isPlayerRegisteredForEvent);
+
         //Update the registration with the given ID
         //Return 200 and JSON for updated object on successful update
         //Return 404 if the specified object does not exist

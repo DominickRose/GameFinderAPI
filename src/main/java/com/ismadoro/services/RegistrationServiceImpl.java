@@ -52,6 +52,19 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     @Override
+    public boolean isPlayerRegisteredForEvent(int playerId, int eventId) {
+        List<Registration> allRegistrations = this.registrationDao.getAllRegistrations();
+        boolean registered = false;
+        //For now, this is what I'll go with.  We'll optimize it once we have the database set up
+        for (Registration registration : allRegistrations) {
+            if (registration.getEventId() == eventId && registration.getPlayerId() == playerId) {
+                registered = true;
+            }
+        }
+        return registered;
+    }
+
+    @Override
     public List<Integer> getAllPlayersForEvent(int eventId) {
         List<Registration> allRegistrations = this.registrationDao.getAllRegistrations();
         List<Integer> playerIds = new ArrayList<>();
