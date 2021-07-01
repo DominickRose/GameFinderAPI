@@ -18,6 +18,4 @@ public interface EventServices {
 
     Boolean deleteEvent(int eventId);
 
-
-
 }

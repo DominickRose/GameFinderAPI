@@ -1,6 +1,7 @@
 package com.ismadoro.services;
 
 import com.ismadoro.daos.EventDao;
+import com.ismadoro.dsa.TrieTree;
 import com.ismadoro.entities.Event;
 
 import java.util.ArrayList;
@@ -30,15 +31,7 @@ public class EventServicesImpl implements EventServices {
 
     @Override
     public List<Event> getEventsByTitle(String title) {
-        List<Event> events = this.eventDao.getAllEvents();
-        List<Event> filteredEvents = new ArrayList<>();
-
-        for (Event e : events) {
-            if (e.getEventTitle().contains(title)) {
-                filteredEvents.add(e);
-            }
-        }
-        return filteredEvents;
+        return eventDao.getEventsByTitle(title);
     }
 
     @Override

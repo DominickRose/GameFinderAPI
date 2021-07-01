@@ -11,6 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDaoPostgres implements EventDao {
+
+    @Override
+    public String nameTrimmer(int eventId) {
+        String untrimmed = getSingleEvent(eventId).getEventTitle();
+        String trimmed = untrimmed.replace(" ", "");
+        return trimmed;
+    }
+
     @Override
     public Event addEvent(Event event) {
         try (Connection connection = ConnectionUtil.createConnection()) {
@@ -62,7 +70,7 @@ public class EventDaoPostgres implements EventDao {
 
             event.setOwnerId(rs.getInt("owner_id"));
             event.setEventId(rs.getInt("event_id"));
-            event.setEventDate(rs.getFloat("event_date"));
+            event.setEventDate(rs.getLong("event_date"));
             event.setCity(rs.getString("city"));
             event.setState(rs.getString("state"));
             event.setDescription(rs.getString("description"));
@@ -94,7 +102,7 @@ public class EventDaoPostgres implements EventDao {
                 Event event = new Event();
                 event.setOwnerId(rs.getInt("owner_id"));
                 event.setEventId(rs.getInt("event_id"));
-                event.setEventDate(rs.getFloat("event_date"));
+                event.setEventDate(rs.getLong("event_date"));
                 event.setCity(rs.getString("city"));
                 event.setState(rs.getString("state"));
                 event.setDescription(rs.getString("description"));
@@ -110,6 +118,11 @@ public class EventDaoPostgres implements EventDao {
             sqlException.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<Event> getEventsByTitle(String title) {
+        return null;
     }
 
     @Override

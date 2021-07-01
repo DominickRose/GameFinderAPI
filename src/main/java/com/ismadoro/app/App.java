@@ -51,6 +51,9 @@ public class App {
         //post /events
         app.post("/events", eventController.createEvent);
 
+        //post /events/search
+        app.post("/events/search", eventController.getEventByTitle);
+
         //put /events
         app.put("/events/:id", eventController.updateEvent);
 
