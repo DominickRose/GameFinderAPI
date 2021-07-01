@@ -50,15 +50,15 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public Player updatePlayer(Player player) {
-        String previousName = getSinglePlayer(player.getPlayerId()).getFullName();
+        Player previousPlayer = getSinglePlayer(player.getPlayerId());
         Player updatedPlayer = this.playerDao.updatePlayer(player);
 
-        this.playerTree.updateWord(previousName, player.getPlayerId(), updatedPlayer.getFullName());
+        this.playerTree.updateWord(previousPlayer.getFullName(), player.getPlayerId(), updatedPlayer.getFullName());
 
-        this.playerUsernameIdMap.remove(previousName);
+        this.playerUsernameIdMap.remove(previousPlayer.getUsername());
         this.playerUsernameIdMap.put(updatedPlayer.getUsername(), updatedPlayer.getPlayerId());
 
-        this.playerUsernamePasswordMap.remove(previousName);
+        this.playerUsernamePasswordMap.remove(previousPlayer.getUsername());
         this.playerUsernamePasswordMap.put(updatedPlayer.getUsername(), updatedPlayer.getPassword());
 
         return updatedPlayer;
@@ -66,11 +66,13 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public boolean deletePlayer(int playerId) {
-        String name = getSinglePlayer(playerId).getFullName();
+        Player previousPlayer = getSinglePlayer(playerId);
         boolean result = this.playerDao.deletePlayer(playerId);
-        this.playerTree.removeWord(name, playerId);
-        this.playerUsernameIdMap.remove(name);
-        this.playerUsernamePasswordMap.remove(name);
+
+        this.playerTree.removeWord(previousPlayer.getFullName(), playerId);
+        this.playerUsernameIdMap.remove(previousPlayer.getUsername());
+        this.playerUsernamePasswordMap.remove(previousPlayer.getUsername());
+
         return result;
     }
 
