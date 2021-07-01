@@ -15,7 +15,7 @@ public class PlayerDaoTests {
     private static final PlayerDao playerDao = new PlayerDaoLocal();
 //    private static final PlayerDao playerDao = new PlayerDaoPostgres();
     private static final Player testPlayer = new Player(0, "Test", "Player", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "0", "WA", "", "");
-    private static final Player testPlayer2 = new Player(0, "Test2", "Player", UUID.randomUUID().toString().substring(0, 20), "test", false, "b@email.com", "0", "UT", "", "");
+    private static final Player testPlayer2 = new Player(0, "TestTwo", "Player", UUID.randomUUID().toString().substring(0, 20), "test", false, "b@email.com", "0", "UT", "", "");
 
 
     @Test(priority = 1)
