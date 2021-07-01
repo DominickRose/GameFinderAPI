@@ -13,7 +13,7 @@ import java.util.List;
 public class EventDaoTests {
 
     static EventDao eventDao = new EventDaoLocal();
-    //    static EventDao eventDao = new EventDaoPostgres();
+//        static EventDao eventDao = new EventDaoPostgres();
     static Event testEvent = new Event(0, 0, 111, "Chicago", "Illinois", "Lalalala", "easy", "Fun Times", "game", 3);
 
     @AfterMethod

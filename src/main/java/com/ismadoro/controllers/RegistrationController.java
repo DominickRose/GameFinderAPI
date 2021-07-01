@@ -33,9 +33,14 @@ public class RegistrationController {
             Gson gson = new Gson();
             Registration newRegistration = gson.fromJson(ctx.body(), Registration.class);
             Registration addedRegistration = this.registrationService.addRegistration(newRegistration);
-            String registrationJson = gson.toJson(addedRegistration);
-            ctx.result(registrationJson);
-            ctx.status(201);
+            if (addedRegistration == null) {
+                ctx.result("Invalid event or player id provided");
+                ctx.status(422);
+            } else {
+                String registrationJson = gson.toJson(addedRegistration);
+                ctx.result(registrationJson);
+                ctx.status(201);
+            }
         } catch (JsonSyntaxException | NullPointerException e) {
             ctx.result("Invalid JSON Body");
             ctx.status(400);
@@ -69,9 +74,14 @@ public class RegistrationController {
             Registration newRegistration = gson.fromJson(ctx.body(), Registration.class);
             newRegistration.setRegistrationId(Integer.parseInt(ctx.pathParam("id")));
             Registration registration = registrationService.updateRegistration(newRegistration);
-            String registrationJson = gson.toJson(registration);
-            ctx.result(registrationJson);
-            ctx.status(200);
+            if (registration == null) {
+                ctx.result("Invalid event or player id provided");
+                ctx.status(422);
+            } else {
+                String registrationJson = gson.toJson(registration);
+                ctx.result(registrationJson);
+                ctx.status(200);
+            }
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result(resourceNotFound.message);
             ctx.status(404);
@@ -99,8 +109,20 @@ public class RegistrationController {
     public Handler getAllPlayersWithConditions = ctx -> {
         try {
             String event = ctx.queryParam("eventId");
+            String name = ctx.queryParam("name");
 
-            if (event != null) {
+            if (name != null) {
+                List<Player> allPlayers = new ArrayList<>();
+                List<Integer> allPlayerIds = playerService.searchForPlayersByName(name);
+                for (Integer playerId : allPlayerIds) {
+                    allPlayers.add(playerService.getSinglePlayer(playerId));
+                }
+                Gson gson = new Gson();
+                String allPlayersJson = gson.toJson(allPlayers);
+
+                ctx.result(allPlayersJson);
+                ctx.status(200);
+            } else if (event != null) {
                 List<Player> allPlayers = new ArrayList<>();
                 List<Integer> allPlayerIds = registrationService.getAllPlayersForEvent(Integer.parseInt(event));
                 for (Integer playerId : allPlayerIds) {
@@ -121,6 +143,9 @@ public class RegistrationController {
         } catch (NumberFormatException e) {
             ctx.result("Invalid search parameter, must be integer");
             ctx.status(400);
+        } catch (ResourceNotFound e ) {
+            ctx.result("[]");
+            ctx.status(200);
         }
     };
 
