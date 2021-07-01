@@ -4,7 +4,6 @@
     <test name="Service Tests">
         <classes>
             <class name="com.ismadoro.services.PlayerServiceTests"></class>
-            <class name="com.ismadoro.services.PlayerServiceIntegrationTests"></class>
             <class name="com.ismadoro.services.EventServiceTests"></class>
             <class name="com.ismadoro.services.RegistrationServiceTests"></class>
         </classes>

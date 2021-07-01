@@ -1,17 +1,30 @@
-package com.ismadoro.services;
+package com.ismadoro.integration;
 
 import com.ismadoro.daos.PlayerDao;
 import com.ismadoro.daos.PlayerDaoLocal;
 import com.ismadoro.daos.PlayerDaoPostgres;
 import com.ismadoro.entities.Player;
+import com.ismadoro.services.PlayerService;
+import com.ismadoro.services.PlayerServiceImpl;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
 
 public class PlayerServiceIntegrationTests {
-    PlayerDao playerDao = new PlayerDaoLocal();
-    PlayerService playerService = new PlayerServiceImpl(playerDao);
+    PlayerDao playerDao;
+    PlayerService playerService;
+
+    @BeforeClass
+    @Parameters({"database"})
+    void setup(String database) {
+        if (database.equals("postgres")) playerDao = new PlayerDaoPostgres();
+        else playerDao = new PlayerDaoLocal();
+
+        playerService = new PlayerServiceImpl(playerDao);
+    }
 
     @Test(priority = 1)
     void testCorrectAdd() {
