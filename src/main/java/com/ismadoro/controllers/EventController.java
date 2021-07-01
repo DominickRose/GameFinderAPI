@@ -1,13 +1,14 @@
 package com.ismadoro.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.ismadoro.entities.Event;
+import com.ismadoro.entities.Player;
 import com.ismadoro.exceptions.InvalidJson;
 import com.ismadoro.exceptions.ResourceNotFound;
 import com.ismadoro.services.EventServices;
 import io.javalin.http.Handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,26 +40,36 @@ public class EventController {
         }
     };
 
-//    public Handler getAllEvents = ctx -> {
-//        try {
-//            String title = ctx.queryParam("titlecontains");
-//            List<Event> events = this.eventServices.getSeveralEvents();
-//            if(title != null){
-//                events = this.eventServices.getSeveralEvents();
-//            }else{
-//                events = this.eventServices.getEventsByTitle(title);
-//            }
-//            Gson gson = new Gson();
-//            String eventJSON = gson.toJson(events);
-//            ctx.result(eventJSON);
-//            ctx.status(200);
-//            ctx.contentType("application/json");
-//        } catch (JsonSyntaxException jsonSyntaxException) {
-//            ctx.result(jsonSyntaxException.getMessage());
-//            ctx.status(400);
-//            throw new InvalidJson("Received malformed JSON");
-//        }
-//    };
+
+    public Handler getEventByTitle = ctx -> {
+        try {
+            JsonElement jElement = JsonParser.parseString(ctx.body());
+            List<Event> events = new ArrayList<>();
+            if (!jElement.isJsonNull()) {
+                JsonObject jObject = jElement.getAsJsonObject();
+                JsonElement title = jObject.get("eventTitle");
+                String eventTitle = title.getAsString();
+                events = eventServices.getEventsByTitle(eventTitle);
+                Gson gson = new Gson();
+                String eventJSON = gson.toJson(events);
+                ctx.result(eventJSON);
+                ctx.status(200);
+                ctx.contentType("application/json");
+            } else {
+                Gson gson = new Gson();
+                String eventJSON = gson.toJson(events);
+                ctx.result(eventJSON);
+                ctx.status(200);
+            }
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        } catch (ResourceNotFound resourceNotFound){
+            ctx.result("Resource not found");
+            ctx.status(404);
+        }
+    };
 
     public Handler getEventById = ctx -> {
         try {
