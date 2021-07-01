@@ -8,28 +8,39 @@ RESTful API for creating and accessing information on volleyball events
 **GET** /players
 + Returns an array with JSON objects representing all players 
   - Status Code 200: Successful retrieval of all players
-  - Status Code 422: Failed to add player because username was a duplicate
     
+**GET** /players?eventId=X
++ Returns an array with JSON objects representing all players registered for event with ID X
+  - Status Code 200: Successful retrieval of said players
+  
+**GET** /players?name=X
++ Returns an array with JSON objects representing all players with names who start with X
+  Status Code 200: Successful retrieval of said players
+
 **GET** /players/id
 + Returns the Player object with the given id
   - Status Code 200: Successful retrieval of specified player
   - Status Code 404: No player object with the given id exists
     
+
 **POST** /players
 + Creates a new player object and adds it to database
   - Status Code 201: Succesfully added new player to database
-    
+  - Status Code 422: Failed to add player because username was a duplicate
+
 **POST** /players/login
 + Requires a body containing "username" and "password" attributes.  Checks the database for a player with the given credentials and returns a JSON object if found.
   - Status Code 200: Succesfully retrieved player with provided credentials
   - Status Code 400: JSON Body does not contain "username" and "password" fields
   - Status Code 422: No player with the provided credentials could be found
     
+
 **PUT** /players/id
 + Updates the player with given id and returns a representation of the new object
   - Status Code 200: Successfully updated the given object
   - Status Code 404: No object with the given ID could be found
     
+
 **DELETE** /players/id
 + Deletes the player with the given id
   - Status Code 205: Succesfully deleted the object
@@ -41,6 +52,7 @@ RESTful API for creating and accessing information on volleyball events
 + Returns an array with JSON objects representing all events 
   - Status Code 200: Successful retrieval of all events
   - Status Code 400: Failed to retrieve event due to malformed JSON
+  - Use query parameter playerID=X to get all events player with ID X is registered for
     
 **GET** /events/id
 + Returns the Event object with the given id
@@ -74,3 +86,16 @@ RESTful API for creating and accessing information on volleyball events
   - Status Code 400: Failed to retrieve event due to malformed JSON
   - Status Code 400: Failed to retrieve event due to inputing a String as id
   - Status Code 404: No event with that id could be found
+  
+### Registrations
+**POST** /registration
++ Creates a new registration to be added to the database
+  - Status Code 201: Succesfully added the object
+  - Status Code 400: Invalid JSON Body
+  - Status Code 422: Either the given parent or event ID do not exist
+  
+**DELETE** /registration/playerId/eventId
++ Deletes the registration connected to the given player and event id
+  - Status Code 205: Succesfully deleted the object
+  - Status Code 404: No object with the given contents exists
+  - Status Code 422: A non-numeric path parameter was provided

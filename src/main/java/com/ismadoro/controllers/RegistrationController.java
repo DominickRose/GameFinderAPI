@@ -105,6 +105,20 @@ public class RegistrationController {
         }
     };
 
+    public Handler deleteRegistrationByContents = ctx -> {
+        try {
+            boolean result = registrationService.deleteRegistrationByContents(Integer.parseInt(ctx.pathParam("playerId")), Integer.parseInt(ctx.pathParam("eventId")));
+            ctx.result("Successfully Deleted Registration");
+            ctx.status(205);
+        } catch (ResourceNotFound resourceNotFound) {
+            ctx.result(resourceNotFound.message);
+            ctx.status(404);
+        } catch (NumberFormatException e) {
+            ctx.result("Invalid ID in path param");
+            ctx.status(400);
+        }
+    };
+
 
     public Handler getAllPlayersWithConditions = ctx -> {
         try {
