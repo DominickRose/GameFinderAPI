@@ -5,6 +5,8 @@ import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.ResourceNotFound;
 import org.testng.Assert;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -12,11 +14,16 @@ import java.util.UUID;
 
 public class PlayerDaoTests {
 
-    private static final PlayerDao playerDao = new PlayerDaoLocal();
-//    private static final PlayerDao playerDao = new PlayerDaoPostgres();
-    private static final Player testPlayer = new Player(0, "Test", "Player", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "0", "WA", "", "");
-    private static final Player testPlayer2 = new Player(0, "Test2", "Player", UUID.randomUUID().toString().substring(0, 20), "test", false, "b@email.com", "0", "UT", "", "");
+    private static PlayerDao playerDao;
+    private Player testPlayer = new Player(0, "Test", "Player", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "0", "WA", "", "");
+    private Player testPlayer2 = new Player(0, "Test2", "Player", UUID.randomUUID().toString().substring(0, 20), "test", false, "b@email.com", "0", "UT", "", "");
 
+    @BeforeClass
+    @Parameters({"database"})
+    void setupClass(String database) {
+        if (database.equals("postgres")) playerDao = new PlayerDaoPostgres();
+        else playerDao = new PlayerDaoLocal();
+    }
 
     @Test(priority = 1)
     void testAddPlayer() {
