@@ -39,6 +39,19 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     @Override
+    public boolean deleteRegistrationByContents(int playerId, int eventId) {
+        List<Registration> allRegistrations = this.registrationDao.getAllRegistrations();
+        int toDelete = 0;
+        for (Registration registration : allRegistrations) {
+            if (registration.getPlayerId() == playerId && registration.getEventId() == eventId) {
+                toDelete = registration.getRegistrationId();
+            }
+        }
+
+        return this.registrationDao.deleteRegistration(toDelete);
+    }
+
+    @Override
     public List<Integer> getAllPlayersForEvent(int eventId) {
         List<Registration> allRegistrations = this.registrationDao.getAllRegistrations();
         List<Integer> playerIds = new ArrayList<>();

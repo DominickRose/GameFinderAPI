@@ -113,6 +113,12 @@ public class App {
         //Return 404 if the ID is invalid
         app.delete("/registrations/:id", registrationController.deleteRegistration);
 
+        //Delete the registration associated with the given Player and Event IDs
+        //Return 205 on successful delete
+        //Return 404 if no player matches those contenst
+        //Return 400 if path parameters are non numeric
+        app.delete("/registrations/:playerId/:eventId", registrationController.deleteRegistrationByContents);
+
 
         app.start();
 

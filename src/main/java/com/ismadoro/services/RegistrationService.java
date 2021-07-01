@@ -18,6 +18,8 @@ public interface RegistrationService {
     //Delete Wrapper
     public boolean deleteRegistration(int registrationId);
 
+    public boolean deleteRegistrationByContents(int playerId, int eventId);
+
     //Business Logic
     public List<Integer> getAllPlayersForEvent(int eventId);
     public List<Integer> getAllEventsForPlayer(int playerId);
