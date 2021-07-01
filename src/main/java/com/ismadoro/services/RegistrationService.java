@@ -20,7 +20,7 @@ public interface RegistrationService {
 
     //Business Logic
     public boolean deleteRegistrationByContents(int playerId, int eventId);
-    public boolean isPlayerRegisterdForEvent(int playerId, int eventId);
+    public boolean isPlayerRegisteredForEvent(int playerId, int eventId);
     public List<Integer> getAllPlayersForEvent(int eventId);
     public List<Integer> getAllEventsForPlayer(int playerId);
 }
