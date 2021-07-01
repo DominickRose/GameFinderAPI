@@ -86,3 +86,16 @@ RESTful API for creating and accessing information on volleyball events
   - Status Code 400: Failed to retrieve event due to malformed JSON
   - Status Code 400: Failed to retrieve event due to inputing a String as id
   - Status Code 404: No event with that id could be found
+  
+### Registrations
+**POST** /registration
++ Creates a new registration to be added to the database
+  - Status Code 201: Succesfully added the object
+  - Status Code 400: Invalid JSON Body
+  - Status Code 422: Either the given parent or event ID do not exist
+  
+**DELETE** /registration/playerId/eventId
++ Deletes the registration connected to the given player and event id
+  - Status Code 205: Succesfully deleted the object
+  - Status Code 404: No object with the given contents exists
+  - Status Code 422: A non-numeric path parameter was provided
