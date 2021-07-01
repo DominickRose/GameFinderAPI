@@ -84,4 +84,18 @@ public class RegistrationServiceTests {
         Assert.assertFalse(registrationService.deleteRegistrationByContents(1, 4));
         Assert.assertFalse(registrationService.deleteRegistrationByContents(3, 1));
     }
+
+    @Test(priority = 4)
+    void testIfPlayerIsRegistered() {
+        Assert.assertTrue(registrationService.isPlayerRegisterdForEvent(1, 1));
+        Assert.assertTrue(registrationService.isPlayerRegisterdForEvent(1, 3));
+        Assert.assertTrue(registrationService.isPlayerRegisterdForEvent(1, 2));
+    }
+
+    @Test(priority = 4)
+    void checkPlayersNotRegistered() {
+        Assert.assertFalse(registrationService.isPlayerRegisterdForEvent(1, 4));
+        Assert.assertFalse(registrationService.isPlayerRegisterdForEvent(2, 3));
+        Assert.assertFalse(registrationService.isPlayerRegisterdForEvent(3, 2));
+    }
 }
