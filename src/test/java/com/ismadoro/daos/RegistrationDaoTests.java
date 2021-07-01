@@ -39,7 +39,7 @@ public class RegistrationDaoTests {
         playerDao.addPlayer(testPlayer2);
 
         testEvent1 = new Event(testPlayer1.getPlayerId(), 0, 1, "NYC", "NY", "Hello", "Beginner", "Test", "4-on-4", 20);
-        testEvent2 = new Event(testPlayer2.getPlayerId(), 0, 1, "NYC", "NY", "Hello", "Beginner", "Test", "4-on-4", 20);
+        testEvent2 = new Event(testPlayer2.getPlayerId(), 0, 1, "WA", "Bremerton", "Hellog", "Beginner", "Testing", "4-on-4", 20);
 
         eventDao.addEvent(testEvent1); //Refactor these once complete
         eventDao.addEvent(testEvent2);
