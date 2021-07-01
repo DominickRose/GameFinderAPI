@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="DAO Tests" verbose="1" >
+    <test name="DAO Tests">
+        <classes>
+            <class name="com.ismadoro.daos.PlayerDaoTests"></class>
+            <class name="com.ismadoro.daos.EventDaoTests"></class>
+            <class name="com.ismadoro.daos.RegistrationDaoTests"></class>
+        </classes>
+    </test>
+</suite>

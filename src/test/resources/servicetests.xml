@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Service Tests" verbose="1" >
+    <test name="Service Tests">
+        <classes>
+            <class name="com.ismadoro.services.PlayerServiceTests"></class>
+            <class name="com.ismadoro.services.EventServiceTests"></class>
+            <class name="com.ismadoro.services.RegistrationServiceTests"></class>
+        </classes>
+    </test>
+</suite>
