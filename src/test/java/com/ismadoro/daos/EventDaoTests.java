@@ -221,7 +221,9 @@ public class EventDaoTests {
 
     @Test(priority = 21)
     void deleteEventPass() {
-        boolean result = eventDao.deleteEvent(testEvent.getEventId());
+        Event delEvent = new Event(0, 0, 222, "Washington", "District of Colombia", "", "easy", "Hard Times", "game", 5);
+        Event event = eventDao.addEvent(delEvent);
+        boolean result = eventDao.deleteEvent(event.getEventId());
         Assert.assertTrue(result);
     }
 
@@ -239,5 +241,21 @@ public class EventDaoTests {
         eventDao.deleteEvent(event2.getEventId());
         eventDao.deleteEvent(event3.getEventId());
     }
+
+    @Test(priority = 23, dependsOnMethods = "addEventPass")
+    void getEventsByTitlePass() {
+        Event event1 = new Event(0, 0, 222, "Washington", "District of Colombia", "", "easy", "hardtimes", "game", 5);
+        Event event2 = new Event(0, 0, 333, "New York", "New York State", "", "easy", "loudtimes", "game", 10);
+        Event event3 = new Event(0, 0, 444, "Atlanta", "Georgia", "", "easy", "freshtimes", "game", 15);
+        eventDao.addEvent(event1);
+        eventDao.addEvent(event2);
+        eventDao.addEvent(event3);
+        List<Event> events = eventDao.getEventsByTitle("loud");
+        Assert.assertEquals(events.size(), 1);
+        Assert.assertEquals(events.get(0).getEventTitle(), "loudtimes");
+        eventDao.deleteEvent(event1.getEventId());
+        eventDao.deleteEvent(event2.getEventId());
+        eventDao.deleteEvent(event3.getEventId());
+        }
 }
 
