@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerServiceTests {
 
@@ -65,19 +66,19 @@ public class PlayerServiceTests {
         Assert.assertNull(result);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     void testGetMostNames() {
         List<Integer> searchResults = playerService.searchForPlayersByName("TestPlay");
         Assert.assertEquals(searchResults.size(), 3);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     void testGetMiddleNames() {
         List<Integer> searchResults = playerService.searchForPlayersByName("TestPlaye");
         Assert.assertEquals(searchResults.size(), 2);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     void testGetLeastNames() {
         List<Integer> searchResults = playerService.searchForPlayersByName("TestPlayer");
         Assert.assertEquals(searchResults.size(), 1);
