@@ -6,6 +6,8 @@ import com.ismadoro.daos.EventDaoPostgres;
 import com.ismadoro.entities.Event;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -14,9 +16,16 @@ import java.util.Map;
 
 public class EventDaoTests {
 
-    static EventDao eventDao = new EventDaoLocal();
-    //static EventDao eventDao = new EventDaoPostgres();
+
+    static EventDao eventDao;
     static Event testEvent = new Event(0, 0, 111, "Chicago", "IL", "Lalalala", "easy", "Fun Times", "game", 3);
+
+    @BeforeClass
+    @Parameters({"database"})
+    void setupClass(String database) {
+        if (database.equals("postgres")) eventDao = new EventDaoPostgres();
+        else eventDao = new EventDaoLocal();
+    }
 
     @AfterMethod
     void GetTestEventCopy() {
@@ -252,7 +261,7 @@ public class EventDaoTests {
         eventDao.addEvent(event1);
         eventDao.addEvent(event2);
         eventDao.addEvent(event3);
-        List<Event> events = eventDao.getEventsByTitle("loud");
+        List<Event> events = eventDao.getEventsByTitle("Loud");
         Assert.assertEquals(events.size(), 2);
         Assert.assertEquals(events.get(0).getEventTitle(), "Louder Times");
         Assert.assertEquals(events.get(1).getEventTitle(), "Loudest Times");
@@ -269,7 +278,7 @@ public class EventDaoTests {
         eventDao.addEvent(event1);
         eventDao.addEvent(event2);
         eventDao.addEvent(event3);
-        List<Event> events = eventDao.getEventsByPlace("n");
+        List<Event> events = eventDao.getEventsByPlace("N");
         Assert.assertEquals(events.size(), 2);
         Assert.assertEquals(events.get(0).getEventTitle(), "Fresh Times");
         Assert.assertEquals(events.get(1).getEventTitle(), "Loud Times");

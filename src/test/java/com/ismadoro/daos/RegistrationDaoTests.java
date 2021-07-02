@@ -7,20 +7,16 @@ import com.ismadoro.exceptions.ResourceNotFound;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.util.List;
 import java.util.UUID;
 
 public class RegistrationDaoTests {
-    private static RegistrationDao registrationDao = new RegistrationDaoLocal();
-//    private static RegistrationDao registrationDao = new RegistrationDaoPostgres();
-
-    private static PlayerDao playerDao = new PlayerDaoLocal();
-//    private static PlayerDao playerDao = new PlayerDaoPostgres();
-
-    private static EventDao eventDao = new EventDaoLocal();
-//    private static EventDao eventDao = new EventDaoPostgres();
+    private static RegistrationDao registrationDao;
+    private static PlayerDao playerDao;
+    private static EventDao eventDao;
 
 
     private static final Player testPlayer1 = new Player(0, "Player", "One", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "1234567890", "WA", "Spokane", "");;
@@ -34,7 +30,19 @@ public class RegistrationDaoTests {
     private final Registration testRegistration2 = new Registration(0, 0, 0); //Edit this to be testEvent1 id once that's completed
 
     @BeforeClass
-    void setup() {
+    @Parameters({"database"})
+    void setup(String database) {
+        if (database.equals("postgres")) {
+            playerDao = new PlayerDaoPostgres();
+            eventDao = new EventDaoPostgres();
+            registrationDao = new RegistrationDaoPostgres();
+        } else {
+            playerDao = new PlayerDaoLocal();
+            eventDao = new EventDaoLocal();
+            registrationDao = new RegistrationDaoLocal();
+        }
+
+
         playerDao.addPlayer(testPlayer1);
         playerDao.addPlayer(testPlayer2);
 
