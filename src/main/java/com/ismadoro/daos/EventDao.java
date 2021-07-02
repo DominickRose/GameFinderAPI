@@ -3,6 +3,7 @@ package com.ismadoro.daos;
 import com.ismadoro.entities.Event;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EventDao {
 
@@ -17,6 +18,8 @@ public interface EventDao {
     Event getSingleEvent(int eventId);
 
     List<Event> getAllEvents();
+
+    Map<Integer, List<Event>> getEventsByOwner(int ownerId);
 
     List<Event> getEventsByTitle(String title);
 
