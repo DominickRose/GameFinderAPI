@@ -48,6 +48,9 @@ public class App {
         //get /events/5
         app.get("/events/:id", eventController.getEventById);
 
+        //get /events/user/1
+        app.get("/events/user/:id", eventController.getEventsByOwnerId);
+
         //post /events
         app.post("/events", eventController.createEvent);
 
