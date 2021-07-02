@@ -27,7 +27,6 @@ public class RegistrationDaoPostgres implements RegistrationDao{
             return registration;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -51,9 +50,9 @@ public class RegistrationDaoPostgres implements RegistrationDao{
             if (sqlException.getSQLState().equals("24000")) {
                 throw new ResourceNotFound("The resource with the given ID could not be found");
             }
-            sqlException.printStackTrace();
             return null;
-        }    }
+        }
+    }
 
     @Override
     public List<Registration> getAllRegistrations() {
@@ -74,7 +73,6 @@ public class RegistrationDaoPostgres implements RegistrationDao{
 
             return registrationList;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -96,7 +94,6 @@ public class RegistrationDaoPostgres implements RegistrationDao{
             return registration;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return null;
         }    }
 
@@ -113,7 +110,6 @@ public class RegistrationDaoPostgres implements RegistrationDao{
             }
             return true; 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return false;
         }
     }

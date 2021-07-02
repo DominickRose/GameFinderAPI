@@ -13,7 +13,6 @@ public class ConnectionUtil {
             Connection connection = DriverManager.getConnection("jdbc:postgresql://proj1-db.cpwt7piygmnx.us-east-1.rds.amazonaws.com:5432/postgres?user=postgres&password=password");
             return connection;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return null;
         }
 
