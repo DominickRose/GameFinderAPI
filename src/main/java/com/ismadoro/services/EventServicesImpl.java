@@ -1,11 +1,10 @@
 package com.ismadoro.services;
 
 import com.ismadoro.daos.EventDao;
-import com.ismadoro.dsa.TrieTree;
 import com.ismadoro.entities.Event;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EventServicesImpl implements EventServices {
     private EventDao eventDao = null;
@@ -42,6 +41,11 @@ public class EventServicesImpl implements EventServices {
     @Override
     public List<Event> getEventsByTime(long time) {
         return eventDao.getEventsByTime(time);
+    }
+
+    @Override
+    public Map<Integer, List<Event>> getEventsByUser(int ownerId) {
+        return eventDao.getEventsByOwner(ownerId);
     }
 
     @Override

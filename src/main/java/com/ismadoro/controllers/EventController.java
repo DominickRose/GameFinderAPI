@@ -10,6 +10,7 @@ import io.javalin.http.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class EventController {
@@ -19,7 +20,6 @@ public class EventController {
     public EventController(EventServices eventServices) {
         this.eventServices = eventServices;
     }
-
 
     public Handler createEvent = ctx -> {
         try {
@@ -39,7 +39,6 @@ public class EventController {
             throw new InvalidJson("Received malformed JSON");
         }
     };
-
 
     public Handler getEventBySearch = ctx -> {
         try {
@@ -93,6 +92,34 @@ public class EventController {
         } catch (ResourceNotFound resourceNotFound) {
             ctx.result("Resource not found");
             ctx.status(404);
+        }
+    };
+
+    public Handler getEventsByOwnerId = ctx -> {
+        try {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+
+            Map<Integer, List<Event>> owned = this.eventServices.getEventsByUser(id);
+            List<Event> ownedEvents = owned.get(id);
+
+            Gson gson = new Gson();
+            String eventJSON = gson.toJson(ownedEvents);
+            ctx.result(eventJSON);
+            ctx.status(200);
+            ctx.contentType("application/json");
+
+        } catch (NumberFormatException numberFormatException) {
+            ctx.result(numberFormatException.getMessage());
+            ctx.status(400);
+            throw new NumberFormatException("Failed to convert a String into an int");
+        } catch (JsonSyntaxException jsonSyntaxException) {
+            ctx.result(jsonSyntaxException.getMessage());
+            ctx.status(400);
+            throw new InvalidJson("Received malformed JSON");
+        } catch (ResourceNotFound resourceNotFound) {
+            ctx.result(resourceNotFound.message);
+            ctx.status(404);
+            throw new ResourceNotFound("Did not receive a valid input");
         }
     };
 

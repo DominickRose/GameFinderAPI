@@ -63,6 +63,21 @@ public class EventDaoLocal implements EventDao {
     }
 
     @Override
+    public Map<Integer, List<Event>> getEventsByOwner(int ownerId) {
+        List<Event> events = new ArrayList<>();
+        Map<Integer, List<Event>> ownedEvents = new HashMap<>();
+
+        for (Event event : getAllEvents()) {
+            if (event.getOwnerId() == ownerId) {
+                events.add(event);
+            }
+        }
+        ownedEvents.put(ownerId, events);
+        return ownedEvents;
+    }
+
+
+    @Override
     public List<Event> getEventsByTitle(String title) {
         List<Event> eventList = new ArrayList<>();
         List<Integer> idList;
