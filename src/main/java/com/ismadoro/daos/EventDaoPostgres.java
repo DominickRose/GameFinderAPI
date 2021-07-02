@@ -59,7 +59,6 @@ public class EventDaoPostgres implements EventDao {
             return event;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             if (event.getEventDate() <= 0 || event.getMaxPlayers() <= 0) {
                 throw new InvalidInput("Event_date and max_events must be greater than 0");
             }
@@ -100,7 +99,6 @@ public class EventDaoPostgres implements EventDao {
 
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             throw new ResourceNotFound("No event with that id exists");
         }
 
@@ -131,7 +129,6 @@ public class EventDaoPostgres implements EventDao {
             return events;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -214,7 +211,6 @@ public class EventDaoPostgres implements EventDao {
             placeTree.updateWord(prevPlace, key, newPlace);
             return event;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             if (event.getEventDate() <= 0 || event.getMaxPlayers() <= 0) {
                 throw new InvalidInput("Event_date and max_events must be greater than 0");
             }
@@ -236,7 +232,6 @@ public class EventDaoPostgres implements EventDao {
             placeTree.removeWord(place, eventId);
             return true;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return false;
         }
     }

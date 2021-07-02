@@ -40,7 +40,6 @@ public class PlayerDaoPostgres implements PlayerDao{
             if (sqlException.getSQLState().equals("23505")) {
                 throw new DuplicateResourceException("A player with this username already exists");
             }
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -74,7 +73,6 @@ public class PlayerDaoPostgres implements PlayerDao{
             if (sqlException.getSQLState().equals("24000")) {
                 throw new ResourceNotFound("Resource with the given ID does not exist");
             }
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -107,7 +105,6 @@ public class PlayerDaoPostgres implements PlayerDao{
 
             return players;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -139,7 +136,6 @@ public class PlayerDaoPostgres implements PlayerDao{
             if (sqlException.getSQLState().equals("23505")) {
                 throw new DuplicateResourceException("Failed to update because a player with this username already exists");
             }
-            sqlException.printStackTrace();
             return null;
         }
     }
@@ -156,7 +152,6 @@ public class PlayerDaoPostgres implements PlayerDao{
             }
             return true;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
             return false;
         }
     }
