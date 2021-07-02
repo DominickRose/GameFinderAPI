@@ -77,7 +77,12 @@ public class RegistrationServiceImpl implements RegistrationService{
             }
         }
 
-        return this.registrationDao.deleteRegistration(toDelete);
+        boolean result = this.registrationDao.deleteRegistration(toDelete);
+        ArrayList<Integer> players = this.playersInEventMap.get(eventId);
+        if (players != null)
+            players.remove(new Integer(playerId));
+        this.playersInEventMap.put(eventId, players);
+        return result;
     }
 
     @Override
