@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerServiceTests {
 
@@ -28,13 +29,11 @@ public class PlayerServiceTests {
         mockList.add(testPlayer2);
         mockList.add(testPlayer3);
 
-        RepeatSafeTrieTree mockTrieTree = new RepeatSafeTrieTree();
-        mockTrieTree.addWord(testPlayer1.getFullName(), testPlayer1.getPlayerId());
-        mockTrieTree.addWord(testPlayer2.getFullName(), testPlayer2.getPlayerId());
-        mockTrieTree.addWord(testPlayer3.getFullName(), testPlayer3.getPlayerId());
-
         Mockito.when(mockPlayerDao.getAllPlayers()).thenReturn(mockList);
-        playerService = new PlayerServiceImpl(mockPlayerDao, mockTrieTree);
+        Mockito.when(mockPlayerDao.getSinglePlayer(1)).thenReturn(testPlayer1);
+        Mockito.when(mockPlayerDao.getSinglePlayer(2)).thenReturn(testPlayer2);
+        Mockito.when(mockPlayerDao.getSinglePlayer(3)).thenReturn(testPlayer3);
+        playerService = new PlayerServiceImpl(mockPlayerDao);
     }
 
     @Test(priority = 1)
@@ -67,19 +66,19 @@ public class PlayerServiceTests {
         Assert.assertNull(result);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     void testGetMostNames() {
         List<Integer> searchResults = playerService.searchForPlayersByName("TestPlay");
         Assert.assertEquals(searchResults.size(), 3);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     void testGetMiddleNames() {
         List<Integer> searchResults = playerService.searchForPlayersByName("TestPlaye");
         Assert.assertEquals(searchResults.size(), 2);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     void testGetLeastNames() {
         List<Integer> searchResults = playerService.searchForPlayersByName("TestPlayer");
         Assert.assertEquals(searchResults.size(), 1);

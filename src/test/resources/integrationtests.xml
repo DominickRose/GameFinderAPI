@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Integration Tests" verbose="1" >
+    <test name="Local Integration Tests">
+        <parameter name="database" value="local"></parameter>
+        <classes>
+            <class name="com.ismadoro.integration.PlayerServiceIntegrationTests"></class>
+        </classes>
+    </test>
+
+    <test name="Postgres Integration Tests">
+        <parameter name="database" value="postgres"></parameter>
+        <classes>
+            <class name="com.ismadoro.integration.PlayerServiceIntegrationTests"></class>
+        </classes>
+    </test>
+</suite>
