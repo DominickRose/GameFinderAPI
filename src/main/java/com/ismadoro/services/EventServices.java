@@ -13,6 +13,8 @@ public interface EventServices {
 
     List<Event> getSeveralEvents();
 
+    List<Event> getEventsBySearch (String title, String place, long time, String type, String skill);
+
     List<Event> getEventsByTitle(String title);
 
     List<Event> getEventsByPlace(String place);
