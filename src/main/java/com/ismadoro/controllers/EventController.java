@@ -47,6 +47,7 @@ public class EventController {
             Gson gson = new Gson();
 
             if (!jElement.isJsonNull()) {
+                events = eventServices.getSeveralEvents();
                 JsonObject jObject = jElement.getAsJsonObject();
 
                 JsonElement title = jObject.get("eventTitle");
@@ -55,26 +56,18 @@ public class EventController {
                 JsonElement type = jObject.get("eventType");
                 JsonElement skill = jObject.get("eventSkill");
 
+                String eventTitle = title.getAsString();
+                String eventPlace = place.getAsString();
+                long eventTime;
+                String eventType = type.getAsString();
+                String eventSkill = skill.getAsString();
 
-                if (!title.isJsonNull()) {
-                    String eventTitle = title.getAsString();
-                    events = eventServices.getEventsByTitle(eventTitle);
+                if (time.isJsonNull()) {
+                    eventTime = 0;
+                } else {
+                    eventTime = time.getAsLong();
                 }
-                if (!place.isJsonNull()) {
-                    String eventPlace = place.getAsString();
-                    events = eventServices.getEventsByPlace(eventPlace);
-                }
-                if (!time.isJsonNull()) {
-                    long eventTime = time.getAsLong();
-                    events = eventServices.getEventsByTime(eventTime);
-                }
-                if (!type.isJsonNull()) {
-                    String eventType = type.getAsString();
-                }
-                if (!skill.isJsonNull()) {
-                    String eventSkill = skill.getAsString();
-                }
-
+                events = eventServices.getEventsBySearch(eventTitle, eventPlace, eventTime, eventType, eventSkill);
 
                 String eventJSON = gson.toJson(events);
                 ctx.result(eventJSON);
