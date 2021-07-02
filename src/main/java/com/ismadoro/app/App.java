@@ -15,14 +15,13 @@ import com.ismadoro.services.EventServices;
 import com.ismadoro.services.EventServicesImpl;
 
 import io.javalin.Javalin;
+import io.javalin.core.JavalinConfig;
 
 public class App {
 
     public static void main(String[] args) {
 
-        Javalin app = Javalin.create(javalinConfig -> {
-            javalinConfig.enableCorsForAllOrigins();
-        });
+        Javalin app = Javalin.create(JavalinConfig::enableCorsForAllOrigins);
 
         EventDao eventDao = new EventDaoPostgres();
         EventServices eventServices = new EventServicesImpl(eventDao);
