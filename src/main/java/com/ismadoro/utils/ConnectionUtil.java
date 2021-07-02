@@ -19,6 +19,7 @@ public class ConnectionUtil {
             Connection connection = DriverManager.getConnection(connectionUrl);
             return connection;
         } catch (SQLException sqlException) {
+            //Just to have something to psuh
             return null;
         }
 
