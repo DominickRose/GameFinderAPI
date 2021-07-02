@@ -33,4 +33,20 @@
             <class name="com.ismadoro.dsa.RepeatSafeTrieTreeTests"></class>
         </classes>
     </test>
+
+    <test name="Local Integration Tests">
+        <parameter name="database" value="local"></parameter>
+        <classes>
+            <class name="com.ismadoro.integration.PlayerServiceIntegrationTests"></class>
+            <class name="com.ismadoro.integration.RegistrationServiceIntegrationTests"></class>
+        </classes>
+    </test>
+
+    <test name="Postgres Integration Tests">
+        <parameter name="database" value="postgres"></parameter>
+        <classes>
+            <class name="com.ismadoro.integration.PlayerServiceIntegrationTests"></class>
+            <class name="com.ismadoro.integration.RegistrationServiceIntegrationTests"></class>
+        </classes>
+    </test>
 </suite>

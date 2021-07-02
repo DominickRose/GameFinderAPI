@@ -7,8 +7,6 @@ import com.ismadoro.exceptions.ResourceNotFound;
 import com.ismadoro.services.PlayerService;
 import io.javalin.http.Handler;
 
-import java.util.List;
-
 public class PlayerController {
 
     private PlayerService playerService;
@@ -32,14 +30,6 @@ public class PlayerController {
             ctx.status(400);
         }
     };
-
-//    public Handler getAllPlayers = ctx -> {
-//        List<Player> allPlayers = playerService.getAllPlayers();
-//        Gson gson = new Gson();
-//        String allPlayersJson = gson.toJson(allPlayers);
-//        ctx.result(allPlayersJson);
-//        ctx.status(200);
-//    };
 
     public Handler getSinglePlayer = ctx -> {
         try {

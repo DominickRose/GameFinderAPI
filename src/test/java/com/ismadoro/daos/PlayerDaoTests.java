@@ -15,8 +15,9 @@ import java.util.UUID;
 public class PlayerDaoTests {
 
     private static PlayerDao playerDao;
-    private Player testPlayer = new Player(0, "Test", "Player", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "0", "WA", "", "");
-    private Player testPlayer2 = new Player(0, "Test2", "Player", UUID.randomUUID().toString().substring(0, 20), "test", false, "b@email.com", "0", "UT", "", "");
+
+    private final Player testPlayer = new Player(0, "Test", "Player", UUID.randomUUID().toString().substring(0, 20), "test", true, "a@email.com", "0", "WA", "", "");
+    private final Player testPlayer2 = new Player(0, "TestTwo", "Player", UUID.randomUUID().toString().substring(0, 20), "test", false, "b@email.com", "0", "UT", "", "");
 
     @BeforeClass
     @Parameters({"database"})

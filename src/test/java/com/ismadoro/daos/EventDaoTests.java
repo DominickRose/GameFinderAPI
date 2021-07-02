@@ -10,9 +10,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventDaoTests {
+
 
     static EventDao eventDao;
     static Event testEvent = new Event(0, 0, 111, "Chicago", "IL", "Lalalala", "easy", "Fun Times", "game", 3);
@@ -279,6 +282,22 @@ public class EventDaoTests {
         Assert.assertEquals(events.size(), 2);
         Assert.assertEquals(events.get(0).getEventTitle(), "Fresh Times");
         Assert.assertEquals(events.get(1).getEventTitle(), "Loud Times");
+        eventDao.deleteEvent(event1.getEventId());
+        eventDao.deleteEvent(event2.getEventId());
+        eventDao.deleteEvent(event3.getEventId());
+    }
+
+    @Test(priority = 25, dependsOnMethods = {"addEventPass", "deleteEventPass"})
+    void getEventsByOwnerPass() {
+        Event event1 = new Event(2, 0, 222, "Washington", "DC", "", "easy", "Hard Times", "game", 5);
+        Event event2 = new Event(2, 0, 333, "New York", "NY", "", "easy", "Loud Times", "game", 10);
+        Event event3 = new Event(3, 0, 444, "Charlotte", "NC", "", "easy", "Fresh Times", "game", 15);
+        eventDao.addEvent(event1);
+        eventDao.addEvent(event2);
+        eventDao.addEvent(event3);
+        Map<Integer, List<Event>> ownedEvents = eventDao.getEventsByOwner(2);
+        List<Event> events = ownedEvents.get(2);
+        Assert.assertEquals(events.size(), 2);
         eventDao.deleteEvent(event1.getEventId());
         eventDao.deleteEvent(event2.getEventId());
         eventDao.deleteEvent(event3.getEventId());
