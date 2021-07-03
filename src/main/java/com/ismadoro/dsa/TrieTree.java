@@ -6,14 +6,14 @@ import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.ResourceNotFound;
 import com.ismadoro.exceptions.InvalidParamException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class TrieTree {
     private final TrieNode root;
     private TrieNode curNode;
-    //Est. 250k * 109 bytes per node = 27MB Capacity
-    private final int maxNodes = 250000;
+    //Est. 125k * 213 bytes per node = 27MB Capacity
+    private final int maxNodes = 125000;
     private int curNodes = 0;
 
 
@@ -45,6 +45,41 @@ public class TrieTree {
         curNode.id = -1;
     }
 
+    private void iterativeHelper(TrieNode node, ArrayList<Integer> curList) {
+        LinkedList<TrieNode> callStack = new LinkedList<>();
+        HashMap<TrieNode, Integer> nodeToCurChildIndex = new HashMap<>();
+
+        callStack.addLast(node);
+        nodeToCurChildIndex.put(node, 0);
+        TrieNode currentNode = null;
+        while(!callStack.isEmpty()) {
+            //Populate the stack
+            while(callStack.getLast() != currentNode) {
+                //Process current node
+                currentNode = callStack.getLast();
+
+                //Add our id only if this is our first time processing this node
+                int curChildIndex = nodeToCurChildIndex.get(currentNode);
+                if(curChildIndex == 0 && currentNode.id > -1) {
+                    curList.add(currentNode.id);
+                }
+
+                //Iterate to find a child to add to the stack
+                for(int i = curChildIndex; i < 26; ++i) {
+                    //If we find a child node add it to the stack
+                    if(currentNode.children[i] != null) {
+                        callStack.addLast(currentNode.children[i]);
+                        nodeToCurChildIndex.replace(currentNode, i+1);
+                        nodeToCurChildIndex.put(currentNode.children[i], 0);
+                        break;
+                    }
+                }
+            }
+            //Remove top node from the stack (it has no more children)
+            callStack.removeLast();
+            currentNode = null;
+        }
+    }
     private void recursiveHelper(TrieNode node, ArrayList<Integer> curList) {
         //BUG - VERY dangerous Stackoverflow is possible for huge strings!
         if (node.id != -1) curList.add(node.id);
@@ -56,8 +91,8 @@ public class TrieTree {
     public boolean addWord(String word, int id) {
         if (word.isEmpty())
             throw new InvalidParamException("Word cannot be empty!");
-        if (word.length() > 100)
-            throw new InvalidParamException("Word cannot exceed 100 characters");
+        //if (word.length() > 100)
+        //    throw new InvalidParamException("Word cannot exceed 100 characters");
 
         TrieNode curNode = root;
         for (int i = 0; i < word.length(); ++i) {
@@ -122,7 +157,8 @@ public class TrieTree {
     public ArrayList<Integer> getAllIdsStartingWith(String word) {
         ArrayList<Integer> foundIds = new ArrayList<>();
         if (traverseTo(word)) {
-            recursiveHelper(curNode, foundIds);
+            //recursiveHelper(curNode, foundIds);
+            iterativeHelper(curNode, foundIds);
         }
         return foundIds;
     }

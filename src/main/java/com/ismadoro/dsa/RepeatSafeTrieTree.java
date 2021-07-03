@@ -4,14 +4,13 @@ import com.ismadoro.exceptions.DuplicateResourceException;
 import com.ismadoro.exceptions.InvalidParamException;
 import com.ismadoro.exceptions.ResourceNotFound;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RepeatSafeTrieTree {
     private final RepeatSafeTrieNode root;
     private RepeatSafeTrieNode curNode;
-    //Est. 250k * 109 bytes per node = 27MB Capacity
-    private final int maxNodes = 250000;
+    //Est. 125k * 213 bytes per node = 27MB Capacity
+    private final int maxNodes = 125000;
     private int curNodes = 0;
 
 
@@ -45,6 +44,43 @@ public class RepeatSafeTrieTree {
         }
     }
 
+    private void iterativeHelper(RepeatSafeTrieNode node, ArrayList<Integer> curList) {
+        LinkedList<RepeatSafeTrieNode> callStack = new LinkedList<>();
+        HashMap<RepeatSafeTrieNode, Integer> nodeToCurChildIndex = new HashMap<>();
+        HashSet<Integer> seenIds = new HashSet<>();
+
+        callStack.addLast(node);
+        nodeToCurChildIndex.put(node, 0);
+        RepeatSafeTrieNode currentNode = null;
+        while(!callStack.isEmpty()) {
+            //Populate the stack
+            while(callStack.getLast() != currentNode) {
+                //Process current node
+                currentNode = callStack.getLast();
+                //Add our id if we havent seen it before
+                for(int i = 0; currentNode.idList != null && i < currentNode.idList.size(); ++i) {
+                    if(!seenIds.contains(currentNode.idList.get(i))) {
+                        curList.add(currentNode.idList.get(i));
+                        seenIds.add(currentNode.idList.get(i));
+                    }
+                }
+
+                //Iterate to find a child to add to the stack
+                for(int i = nodeToCurChildIndex.get(currentNode); i < 26; ++i) {
+                    //If we find a child node add it to the stack
+                    if(currentNode.children[i] != null) {
+                        callStack.addLast(currentNode.children[i]);
+                        nodeToCurChildIndex.replace(currentNode, i+1);
+                        nodeToCurChildIndex.put(currentNode.children[i], 0);
+                        break;
+                    }
+                }
+            }
+            //Remove top node from the stack (it has no more children)
+            callStack.removeLast();
+            currentNode = null;
+        }
+    }
     private void recursiveHelper(RepeatSafeTrieNode node, ArrayList<Integer> curList) {
         //BUG - VERY dangerous Stackoverflow is possible for huge strings!
         if(node.idList != null) curList.addAll(node.idList);
@@ -56,8 +92,8 @@ public class RepeatSafeTrieTree {
     public boolean addWord(String word, int id) {
         if(word.isEmpty())
             throw new InvalidParamException("Word cannot be empty!");
-        if(word.length() > 100)
-            throw new InvalidParamException("Word cannot exceed 100 characters");
+        //if(word.length() > 100)
+        //    throw new InvalidParamException("Word cannot exceed 100 characters");
 
         RepeatSafeTrieNode curNode = root;
         for(int i = 0; i < word.length(); ++i) {
@@ -122,7 +158,8 @@ public class RepeatSafeTrieTree {
     public ArrayList<Integer> getAllIdsStartingWith(String word) {
         ArrayList<Integer> foundIds = new ArrayList<>();
         if(traverseTo(word)) {
-            recursiveHelper(curNode, foundIds);
+            //recursiveHelper(curNode, foundIds);
+            iterativeHelper(curNode, foundIds);
         }
         return foundIds;
     }
