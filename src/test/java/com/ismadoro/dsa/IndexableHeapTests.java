@@ -101,11 +101,17 @@ public class IndexableHeapTests {
     }
 
     @Test(priority = 2, dependsOnMethods = { "testCreateBasicHeap", "testAddEvent"})
-    void testGetElementsBeforeTime() {
+    void testGetElementsBeforeTimeAll() {
         ArrayList<Event> resultEvents = idxHeap.getElementsBefore(41);
         for(int i = 0; i < resultEvents.size(); ++i) {
             Assert.assertTrue(resultEvents.get(i).getEventDate() <= 41);
         }
+    }
+
+    @Test(priority = 2, dependsOnMethods = { "testCreateBasicHeap", "testAddEvent"})
+    void testGetElementsBeforeTimeSome() {
+        ArrayList<Event> resultEvents = idxHeap.getElementsBefore(100, 2);
+        Assert.assertTrue(resultEvents.size() == 2);
     }
 
     //Indexing Functionality

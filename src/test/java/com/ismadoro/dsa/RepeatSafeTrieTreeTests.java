@@ -303,13 +303,13 @@ public class RepeatSafeTrieTreeTests {
         }
     }
 
-//    @Test(priority = 6)
-//    void testOutOfMemory() {
-//        try {
-//            fillTrieTree("");
-//            Assert.fail();
-//        } catch (OutOfMemoryError exception) {
-//            //Success
-//        }
-//    }
+    @Test(priority = 6)
+    void testOutOfMemory() {
+        try {
+            fillTrieTree("");
+            Assert.fail();
+        } catch (OutOfMemoryError exception) {
+            //Success
+        }
+    }
 }

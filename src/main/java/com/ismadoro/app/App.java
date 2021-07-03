@@ -24,15 +24,15 @@ public class App {
             javalinConfig.enableCorsForAllOrigins();
         });
 
-        EventDao eventDao = new EventDaoPostgres();
+        EventDao eventDao = new EventDaoLocal(); //new EventDaoPostgres();
         EventServices eventServices = new EventServicesImpl(eventDao);
         EventController eventController = new EventController(eventServices);
 
-        PlayerDao playerDao = new PlayerDaoPostgres();
+        PlayerDao playerDao = new PlayerDaoLocal(); //new PlayerDaoPostgres();
         PlayerService playerService = new PlayerServiceImpl(playerDao);
         PlayerController playerController = new PlayerController(playerService);
 
-        RegistrationDao registrationDao = new RegistrationDaoPostgres();
+        RegistrationDao registrationDao = new RegistrationDaoLocal(); //new RegistrationDaoPostgres();
         RegistrationService registrationService = new RegistrationServiceImpl(registrationDao);
         RegistrationController registrationController = new RegistrationController(registrationService, playerService, eventServices);
 

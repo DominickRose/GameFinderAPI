@@ -11,6 +11,7 @@ public class IndexableHeap {
     private final Map<Integer, Integer> EventIdToIndex;
     private ArrayList<Event> events;
     //[0-10]
+    //[0 1 4 2 3 7 9]
     //     0
     //   /   \
     //  1     4
@@ -189,13 +190,17 @@ public class IndexableHeap {
         return true;
     }
     ArrayList<Event> getElementsBefore(long time) {
+        return getElementsBefore(time, Integer.MAX_VALUE);
+    }
+    ArrayList<Event> getElementsBefore(long time, int amount) {
         //Iterate through our 'tree' in BFS fashion to check
         //requirements in semi-sorted order
         ArrayList<Event> results = new ArrayList<>();
         LinkedList<Integer> queue = new LinkedList<>();
         queue.addLast(0);
-        while(!queue.isEmpty()) {
-            Event curEvent = events.get(queue.getFirst());
+        while(!queue.isEmpty() && results.size() < amount) {
+            int curIndex = queue.getFirst();
+            Event curEvent = events.get(curIndex);
             queue.removeFirst();
 
             //Skip if this event time is greater
@@ -204,8 +209,8 @@ public class IndexableHeap {
 
             results.add(curEvent);
             //Add children to the queue
-            int leftIndex = getLeftChild(curEvent.getEventId());
-            int rightIndex = getRightChild(curEvent.getEventId());
+            int leftIndex = getLeftChild(curIndex);
+            int rightIndex = getRightChild(curIndex);
             if(leftIndex < events.size()) queue.addLast(leftIndex);
             if(rightIndex < events.size()) queue.addLast(rightIndex);
         }
