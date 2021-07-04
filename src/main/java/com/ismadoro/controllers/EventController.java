@@ -47,7 +47,7 @@ public class EventController {
             Gson gson = new Gson();
 
             if (!jElement.isJsonNull()) {
-                events = eventServices.getSeveralEvents();
+                events = null;
                 JsonObject jObject = jElement.getAsJsonObject();
 
                 JsonElement title = jObject.get("eventTitle");
