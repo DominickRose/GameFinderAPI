@@ -189,10 +189,10 @@ public class IndexableHeap {
         else siftUp(eventIndex);
         return true;
     }
-    ArrayList<Event> getElementsBefore(long time) {
+    public ArrayList<Event> getElementsBefore(long time) {
         return getElementsBefore(time, Integer.MAX_VALUE);
     }
-    ArrayList<Event> getElementsBefore(long time, int amount) {
+    public ArrayList<Event> getElementsBefore(long time, int amount) {
         //Iterate through our 'tree' in BFS fashion to check
         //requirements in semi-sorted order
         ArrayList<Event> results = new ArrayList<>();

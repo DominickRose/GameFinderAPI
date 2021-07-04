@@ -7,19 +7,15 @@ import java.util.Map;
 
 public interface EventServices {
 
+    String nameTrimmer(int eventId);
+
+    String placeTrimmer(int eventId);
+
     Event createEvent(Event event);
 
     Event getEventById(int eventId);
 
-    List<Event> getSeveralEvents();
-
     List<Event> getEventsBySearch (String title, String place, long time, String type, String skill);
-
-    List<Event> getEventsByTitle(String title);
-
-    List<Event> getEventsByPlace(String place);
-
-    List<Event> getEventsByTime(long time);
 
     Map<Integer, List<Event>> getEventsByUser(int ownerId);
 

@@ -1,5 +1,6 @@
 package com.ismadoro.daos;
 
+import com.ismadoro.dsa.IndexableHeap;
 import com.ismadoro.dsa.RepeatSafeTrieTree;
 import com.ismadoro.dsa.TrieTree;
 import com.ismadoro.entities.Event;
@@ -16,22 +17,8 @@ import java.util.Map;
 
 public class EventDaoPostgres implements EventDao {
 
-    private TrieTree nameTree = new TrieTree();
-    private RepeatSafeTrieTree placeTree = new RepeatSafeTrieTree();
+    private static IndexableHeap eventTable = new IndexableHeap();
 
-    @Override
-    public String nameTrimmer(int eventId) {
-        String untrimmed = getSingleEvent(eventId).getEventTitle();
-        String trimmed = untrimmed.replace(" ", "");
-        return trimmed;
-    }
-
-    @Override
-    public String placeTrimmer(int eventId) {
-        String untrimmed = getSingleEvent(eventId).getState() + getSingleEvent(eventId).getCity();
-        String trimmed = untrimmed.replace(" ", "");
-        return trimmed;
-    }
 
     @Override
     public Event addEvent(Event event) {
@@ -53,9 +40,8 @@ public class EventDaoPostgres implements EventDao {
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
             int key = rs.getInt(1);
-            nameTree.addWord(nameTrimmer(key), key);
-            placeTree.addWord(placeTrimmer(key), key);
             event.setEventId(key);
+            eventTable.addEvent(event);
             return event;
 
         } catch (SQLException sqlException) {
@@ -69,6 +55,10 @@ public class EventDaoPostgres implements EventDao {
 
     @Override
     public Event getSingleEvent(int id) {
+        Event event = eventTable.getEventByID(id);
+        if (event != null) {
+            return event;
+        }
         try (Connection connection = ConnectionUtil.createConnection()) {
             if (id < 0)
                 throw new InvalidInput("Invalid id for event");
@@ -81,7 +71,7 @@ public class EventDaoPostgres implements EventDao {
             ResultSet rs = ps.executeQuery();
 
             rs.next();
-            Event event = new Event();
+            event = new Event();
 
             event.setOwnerId(rs.getInt("owner_id"));
             event.setEventId(rs.getInt("event_id"));
@@ -94,7 +84,7 @@ public class EventDaoPostgres implements EventDao {
             event.setEventType(rs.getString("event_type"));
             event.setMaxPlayers(rs.getInt("max_players"));
 
-
+            eventTable.addEvent(event);
             return event;
 
 
@@ -106,11 +96,18 @@ public class EventDaoPostgres implements EventDao {
 
     @Override
     public List<Event> getAllEvents() {
+        List<Event> events = new ArrayList<>();
+        // This code assumes cache is up to date with database
+        if (eventTable.getSize() > 0) {
+            for (int i = 0; i < eventTable.getSize(); ++i) {
+                events.add(eventTable.getEventByIndex(i));
+            }
+            return events;
+        }
         try (Connection connection = ConnectionUtil.createConnection()) {
             String sql = "select * from events";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            List<Event> events = new ArrayList<>();
 
             while (rs.next()) {
                 Event event = new Event();
@@ -125,6 +122,7 @@ public class EventDaoPostgres implements EventDao {
                 event.setEventType(rs.getString("event_type"));
                 event.setMaxPlayers(rs.getInt("max_players"));
                 events.add(event);
+                eventTable.addEvent(event);
             }
             return events;
 
@@ -148,47 +146,8 @@ public class EventDaoPostgres implements EventDao {
     }
 
     @Override
-    public List<Event> getEventsByTitle(String title) {
-        List<Event> eventList = new ArrayList<>();
-        List<Integer> idList;
-
-        if (title != null) {
-            idList = nameTree.getAllIdsStartingWith(title);
-            for (int id : idList) {
-                eventList.add(getSingleEvent(id));
-            }
-        }
-
-        return eventList;
-
-    }
-
-    @Override
-    public List<Event> getEventsByPlace(String place) {
-        List<Event> eventList = new ArrayList<>();
-        List<Integer> idList;
-
-        if (place != null) {
-            idList = placeTree.getAllIdsStartingWith(place);
-            for (int id : idList) {
-                eventList.add(getSingleEvent(id));
-            }
-        }
-
-        return eventList;
-    }
-
-    @Override
-    public List<Event> getEventsByTime(long time) {
-        return null;
-    }
-
-    @Override
     public Event updateEvent(Event event) {
         try (Connection connection = ConnectionUtil.createConnection()) {
-            int key = event.getEventId();
-            String prevTitle = nameTrimmer(key);
-            String prevPlace = placeTrimmer(key);
 
             String sql = "update events set owner_id=?, event_date=?, city=?, state=?, description=?, skill_level=?, event_title=?, event_type=?, max_players=? where event_id=?";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -204,11 +163,7 @@ public class EventDaoPostgres implements EventDao {
             ps.setInt(10, event.getEventId());
 
             ps.executeUpdate();
-
-            String newTitle = nameTrimmer(key);
-            String newPlace = placeTrimmer(key);
-            nameTree.updateWord(prevTitle, newTitle);
-            placeTree.updateWord(prevPlace, key, newPlace);
+            eventTable.updateEventByID(event.getEventId(), event);
             return event;
         } catch (SQLException sqlException) {
             if (event.getEventDate() <= 0 || event.getMaxPlayers() <= 0) {
@@ -221,18 +176,20 @@ public class EventDaoPostgres implements EventDao {
     @Override
     public boolean deleteEvent(int eventId) {
         try (Connection connection = ConnectionUtil.createConnection()) {
-            String title = nameTrimmer(eventId);
-            String place = placeTrimmer(eventId);
 
             String sql = "delete from events where event_id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, eventId);
             ps.execute();
-            nameTree.removeWord(title);
-            placeTree.removeWord(place, eventId);
+            eventTable.removeEventByID(eventId);
             return true;
         } catch (SQLException sqlException) {
             return false;
         }
+    }
+
+    @Override
+    public List<Event> getEventsBefore(long time) {
+        return eventTable.getElementsBefore(time);
     }
 }

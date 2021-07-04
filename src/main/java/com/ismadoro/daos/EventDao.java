@@ -7,10 +7,6 @@ import java.util.Map;
 
 public interface EventDao {
 
-    String nameTrimmer(int eventId);
-
-    String placeTrimmer(int eventId);
-
     //Create
     Event addEvent(Event event);
 
@@ -21,15 +17,11 @@ public interface EventDao {
 
     Map<Integer, List<Event>> getEventsByOwner(int ownerId);
 
-    List<Event> getEventsByTitle(String title);
-
-    List<Event> getEventsByPlace(String place);
-
-    List<Event> getEventsByTime(long time);
-
     //Update
     Event updateEvent(Event event);
 
     //Delete
     boolean deleteEvent(int eventId);
+
+    List<Event> getEventsBefore(long time);
 }

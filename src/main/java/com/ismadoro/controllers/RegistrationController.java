@@ -188,7 +188,7 @@ public class RegistrationController {
             String title = ctx.queryParam("titlecontains");
 
             if (title != null) { //If the user passes in the titlename query parameter
-                List<Event> events = this.eventServices.getEventsByTitle(title);
+                List<Event> events = this.eventServices.getEventsBySearch(title,"",0,"","");
                 Gson gson = new Gson();
                 String eventJSON = gson.toJson(events);
                 ctx.result(eventJSON);
@@ -206,11 +206,12 @@ public class RegistrationController {
                 ctx.result(allPlayersJson);
                 ctx.status(200);
             } else {
-                List<Event> events = this.eventServices.getSeveralEvents();
-                Gson gson = new Gson();
-                String eventJSON = gson.toJson(events);
-                ctx.result(eventJSON);
-                ctx.status(200);
+                //List<Event> events = this.eventServices.getSeveralEvents();
+                //Gson gson = new Gson();
+                //String eventJSON = gson.toJson(events);
+                //ctx.result(eventJSON);
+                //ctx.status(200);
+                ctx.status(400);
             }
         } catch (NumberFormatException e) {
             ctx.result("Invalid search parameter, must be integer");
